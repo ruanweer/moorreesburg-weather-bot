@@ -1,90 +1,92 @@
 {
-  "updated_at": "2026-02-26 12:02 UTC",
-  "message": "\ud83c\udf24\ufe0f Weer vir vandag\n\n\ud83c\udf05 Son op: 06:31\n\ud83c\udf07 Son sak: 19:25\n\n\ud83c\udf21\ufe0f Min: 16.3\u00b0C\n\ud83c\udf21\ufe0f Max: 25.6\u00b0C\n\n\ud83c\udf27\ufe0f Re\u00ebn kans: 23%\n\ud83c\udf27\ufe0f Re\u00ebn totaal: 0.0 mm\n\n\ud83d\udca8 Wind: 22.7 km/h SW\n\u2600\ufe0f UV Index: 8.30",
-  "daily": [
+  "updated_at": "2026-02-26 14:16",
+  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 06:31\n🌇 Son sak: 19:25\n\n🌡️ Min: 16.3°C\n🌡️ Max: 25.6°C\n\n🌧️ Reën kans: 23%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 10% (0.00 mm)\n\n💨 Wind: 22.7 km/h SW\n☀️ UV Index: 8.30",
+  "next30_rain_prob": 10,
+  "next30_rain_mm": 0.0,
+  "week": [
     {
       "date": "2026-02-26",
-      "tmin": 16.3,
-      "tmax": 25.6,
+      "min": 16.3,
+      "max": 25.6,
       "rain_prob": 23,
       "rain_mm": 0.0,
+      "wind_kmh": 22.7,
+      "wind_dir": "SW",
       "uv": 8.3,
-      "sunrise": "2026-02-26T06:31",
-      "sunset": "2026-02-26T19:25",
-      "wind_max": 22.7,
-      "wind_dir": "SW"
+      "sunrise": "06:31",
+      "sunset": "19:25"
     },
     {
       "date": "2026-02-27",
-      "tmin": 13.4,
-      "tmax": 26.3,
+      "min": 13.4,
+      "max": 26.3,
       "rain_prob": 0,
       "rain_mm": 0.0,
+      "wind_kmh": 23.8,
+      "wind_dir": "S",
       "uv": 8.5,
-      "sunrise": "2026-02-27T06:32",
-      "sunset": "2026-02-27T19:23",
-      "wind_max": 23.8,
-      "wind_dir": "S"
+      "sunrise": "06:32",
+      "sunset": "19:23"
     },
     {
       "date": "2026-02-28",
-      "tmin": 13.6,
-      "tmax": 25.1,
+      "min": 13.6,
+      "max": 25.1,
       "rain_prob": 58,
       "rain_mm": 0.4,
+      "wind_kmh": 27.8,
+      "wind_dir": "W",
       "uv": 8.4,
-      "sunrise": "2026-02-28T06:33",
-      "sunset": "2026-02-28T19:22",
-      "wind_max": 27.8,
-      "wind_dir": "W"
+      "sunrise": "06:33",
+      "sunset": "19:22"
     },
     {
       "date": "2026-03-01",
-      "tmin": 14.7,
-      "tmax": 21.6,
+      "min": 14.7,
+      "max": 21.6,
       "rain_prob": 60,
       "rain_mm": 1.0,
+      "wind_kmh": 25.3,
+      "wind_dir": "SW",
       "uv": 5.85,
-      "sunrise": "2026-03-01T06:34",
-      "sunset": "2026-03-01T19:21",
-      "wind_max": 25.3,
-      "wind_dir": "SW"
+      "sunrise": "06:34",
+      "sunset": "19:21"
     },
     {
       "date": "2026-03-02",
-      "tmin": 10.8,
-      "tmax": 25.1,
+      "min": 10.8,
+      "max": 25.1,
       "rain_prob": 0,
       "rain_mm": 0.0,
+      "wind_kmh": 22.7,
+      "wind_dir": "S",
       "uv": 8.3,
-      "sunrise": "2026-03-02T06:34",
-      "sunset": "2026-03-02T19:20",
-      "wind_max": 22.7,
-      "wind_dir": "S"
+      "sunrise": "06:34",
+      "sunset": "19:20"
     },
     {
       "date": "2026-03-03",
-      "tmin": 11.1,
-      "tmax": 26.2,
+      "min": 11.1,
+      "max": 26.2,
       "rain_prob": 2,
       "rain_mm": 0.0,
+      "wind_kmh": 18.3,
+      "wind_dir": "S",
       "uv": 8.05,
-      "sunrise": "2026-03-03T06:35",
-      "sunset": "2026-03-03T19:19",
-      "wind_max": 18.3,
-      "wind_dir": "S"
+      "sunrise": "06:35",
+      "sunset": "19:19"
     },
     {
       "date": "2026-03-04",
-      "tmin": 15.2,
-      "tmax": 29.2,
+      "min": 15.2,
+      "max": 29.2,
       "rain_prob": 3,
       "rain_mm": 0.0,
+      "wind_kmh": 18.4,
+      "wind_dir": "SW",
       "uv": 8.05,
-      "sunrise": "2026-03-04T06:36",
-      "sunset": "2026-03-04T19:17",
-      "wind_max": 18.4,
-      "wind_dir": "SW"
+      "sunrise": "06:36",
+      "sunset": "19:17"
     }
   ]
 }
