@@ -1,138 +1,453 @@
 <!DOCTYPE html>
 <html lang="af">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Ruan Weer Stasie</title>
 
 <style>
-body{
-  font-family: Arial, sans-serif;
-  background:#f4f6f9;
-  margin:0;
-  padding:20px;
-}
+  :root{
+    --bg1:#3b82f6; --bg2:#1e3a8a;
+    --card: rgba(255,255,255,.16);
+    --card2: rgba(255,255,255,.20);
+    --text: #ffffff;
+    --muted: rgba(255,255,255,.75);
+    --shadow: rgba(0,0,0,.25);
+    --btnbg: rgba(255,255,255,.9);
+    --btntext: #1e3a8a;
+  }
 
-h1{
-  font-size:28px;
-}
+  body.night{
+    --bg1:#0b1026; --bg2:#020617;
+    --card: rgba(255,255,255,.10);
+    --card2: rgba(255,255,255,.14);
+    --text:#e5e7eb;
+    --muted: rgba(229,231,235,.7);
+    --shadow: rgba(0,0,0,.45);
+    --btnbg: rgba(255,255,255,.12);
+    --btntext: #e5e7eb;
+  }
 
-.card{
-  background:white;
-  padding:18px;
-  border-radius:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.08);
-  margin-bottom:20px;
-}
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--text);
+    min-height:100vh;
+    background: radial-gradient(1000px 800px at 20% 10%, rgba(255,255,255,.18), transparent 50%),
+                linear-gradient(135deg, var(--bg1), var(--bg2));
+    overflow-x:hidden;
+    padding: 18px 16px 30px;
+  }
 
-.weekFile{
-  background:white;
-  border-radius:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.08);
-  padding:12px;
-}
+  /* Animated clouds background */
+  .sky{
+    position: fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:-1;
+  }
+  .cloud{
+    position:absolute;
+    width: 320px;
+    height: 120px;
+    background: rgba(255,255,255,.14);
+    filter: blur(1px);
+    border-radius: 999px;
+    top: 10%;
+    left:-40%;
+    animation: floatCloud 55s linear infinite;
+  }
+  .cloud::before, .cloud::after{
+    content:"";
+    position:absolute;
+    background: inherit;
+    border-radius: 999px;
+  }
+  .cloud::before{ width: 150px; height: 90px; left: 50px; top:-35px; }
+  .cloud::after{ width: 190px; height: 100px; left: 120px; top:-25px; }
 
-summary{
-  font-weight:bold;
-  font-size:18px;
-  cursor:pointer;
-  padding:8px;
-}
+  .cloud.c2{ top: 28%; width: 420px; height: 140px; opacity:.55; animation-duration: 75s; animation-delay:-20s; }
+  .cloud.c3{ top: 52%; width: 260px; height: 100px; opacity:.35; animation-duration: 65s; animation-delay:-38s; }
+  .cloud.c4{ top: 70%; width: 520px; height: 160px; opacity:.25; animation-duration: 95s; animation-delay:-60s; }
 
-.weekGrid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:12px;
-  margin-top:15px;
-}
+  @keyframes floatCloud{
+    from{ transform: translateX(-10%); left:-40%; }
+    to{ transform: translateX(10%); left: 120%; }
+  }
 
-.dayCard{
-  background:#f9fafc;
-  padding:10px;
-  border-radius:10px;
-  font-size:14px;
-}
+  .wrap{
+    max-width: 900px;
+    margin: 0 auto;
+  }
 
-button{
-  padding:8px 14px;
-  border:none;
-  border-radius:8px;
-  background:#e9edf3;
-  cursor:pointer;
-}
+  .topbar{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .title{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .title h1{
+    margin:0;
+    font-size: clamp(28px, 4.8vw, 44px);
+    letter-spacing: .2px;
+  }
+  .title .icon{
+    font-size: clamp(28px, 4.8vw, 42px);
+    transform: translateY(2px);
+  }
+
+  .righttools{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:8px;
+    min-width: 160px;
+  }
+  .clock{
+    font-variant-numeric: tabular-nums;
+    font-weight:700;
+    font-size: 18px;
+    opacity:.95;
+  }
+  .sub{
+    color: var(--muted);
+    font-size: 14px;
+    line-height:1.35;
+    text-align:right;
+  }
+
+  .btnrow{
+    display:flex;
+    gap:8px;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+  }
+  button{
+    border:0;
+    padding:10px 12px;
+    border-radius: 14px;
+    background: var(--btnbg);
+    color: var(--btntext);
+    font-weight: 800;
+    cursor:pointer;
+    box-shadow: 0 10px 18px var(--shadow);
+  }
+  button.secondary{
+    background: rgba(255,255,255,.14);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: none;
+  }
+
+  .card{
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: 0 14px 30px var(--shadow);
+    backdrop-filter: blur(10px);
+  }
+  .card + .card{ margin-top: 14px; }
+
+  .hero{
+    display:flex;
+    align-items:stretch;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .bigtemp{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .bigtemp .now{
+    font-size: clamp(46px, 7vw, 68px);
+    font-weight: 900;
+    letter-spacing:-1px;
+    line-height:1;
+  }
+  .bigtemp .minmax{
+    color: var(--muted);
+    font-weight:700;
+  }
+  .bigtemp .desc{
+    margin-top:6px;
+    font-weight:700;
+    opacity:.95;
+  }
+
+  .pillgrid{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    gap: 10px;
+    align-content:start;
+  }
+  @media (max-width: 520px){
+    .hero{ flex-direction:column; }
+    .pillgrid{ grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+  }
+
+  .pill{
+    background: var(--card2);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 18px;
+    padding: 12px;
+    text-align:left;
+  }
+  .pill .label{
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing:.4px;
+    text-transform: uppercase;
+    display:flex;
+    gap:6px;
+    align-items:center;
+  }
+  .pill .value{
+    margin-top:6px;
+    font-variant-numeric: tabular-nums;
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  details{
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 22px;
+    padding: 14px 16px;
+    box-shadow: 0 14px 30px var(--shadow);
+    backdrop-filter: blur(10px);
+  }
+  summary{
+    list-style:none;
+    cursor:pointer;
+    font-weight: 900;
+    font-size: 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  summary::-webkit-details-marker{ display:none; }
+  .chev{
+    opacity:.9;
+    transform: rotate(0deg);
+    transition: transform .2s ease;
+  }
+  details[open] .chev{ transform: rotate(90deg); }
+
+  .weekGrid{
+    margin-top: 14px;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .day{
+    background: var(--card2);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 18px;
+    padding: 12px;
+  }
+  .day .dtitle{
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .day .row{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 13px;
+    margin: 5px 0;
+  }
+  .day .row b{
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .warn{
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+  }
 </style>
 </head>
 
 <body>
-
-<h1>🌤️ Ruan Weer Stasie</h1>
-
-<p>Laas opgedateer: <span id="updated"></span></p>
-
-<div class="card">
-  <h3>🌞 Weer vir vandag</h3>
-
-  <p>🌅 Son op: <span id="sunrise"></span></p>
-  <p>🌇 Son sak: <span id="sunset"></span></p>
-
-  <p>🌡️ Min: <span id="min"></span>°C</p>
-  <p>🌡️ Max: <span id="max"></span>°C</p>
-
-  <p>🌧️ Reën kans: <span id="rainChance"></span>%</p>
-  <p>🌧️ Reën totaal: <span id="rainTotal"></span> mm</p>
-
-  <p>⏱️ Reën volgende 30min: <span id="rain30"></span>%</p>
-
-  <p>💨 Wind: <span id="wind"></span> km/h <span id="windDir"></span></p>
-  <p>☀️ UV Index: <span id="uv"></span></p>
-
-  <button onclick="location.reload()">Refresh</button>
+<div class="sky">
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+  <div class="cloud c4"></div>
 </div>
 
-<details class="weekFile">
-  <summary>📁 7 Dae Voorspelling</summary>
+<div class="wrap">
 
-  <div class="weekGrid" id="week"></div>
-</details>
+  <div class="topbar">
+    <div class="title">
+      <div class="icon">🌤️</div>
+      <h1>Ruan Weer Stasie</h1>
+    </div>
+
+    <div class="righttools">
+      <div class="clock" id="clock">--:--</div>
+      <div class="sub">
+        Laas opgedateer: <b id="updated">—</b>
+      </div>
+      <div class="btnrow">
+        <button class="secondary" id="modeBtn">🌙 Night</button>
+        <button onclick="location.reload()">🔄 Refresh</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card hero">
+    <div class="bigtemp">
+      <div class="now" id="tmax">—°</div>
+      <div class="minmax">Min: <span id="tmin">—</span>°C • Max: <span id="tmax2">—</span>°C</div>
+      <div class="desc" id="headline">Weer vir vandag</div>
+      <div class="warn" id="msg"></div>
+    </div>
+
+    <div class="pillgrid">
+      <div class="pill">
+        <div class="label">🌅 Son op</div>
+        <div class="value" id="sunrise">—</div>
+      </div>
+      <div class="pill">
+        <div class="label">🌇 Son sak</div>
+        <div class="value" id="sunset">—</div>
+      </div>
+      <div class="pill">
+        <div class="label">🌧️ Reën kans</div>
+        <div class="value"><span id="rainChance">—</span>%</div>
+      </div>
+      <div class="pill">
+        <div class="label">⏱️ Volgende 30 min</div>
+        <div class="value"><span id="rain30">—</span>%</div>
+      </div>
+      <div class="pill">
+        <div class="label">💨 Wind</div>
+        <div class="value"><span id="wind">—</span></div>
+      </div>
+      <div class="pill">
+        <div class="label">☀️ UV Index</div>
+        <div class="value"><span id="uv">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <details>
+    <summary>
+      📁 7 Dae Voorspelling
+      <span class="chev">▶</span>
+    </summary>
+    <div class="weekGrid" id="week"></div>
+  </details>
+
+</div>
 
 <script>
-fetch("data.json")
-.then(res => res.json())
-.then(data => {
+/* ============ Clock ============ */
+function pad(n){ return String(n).padStart(2,"0"); }
+function tickClock(){
+  const d = new Date();
+  document.getElementById("clock").innerText = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+setInterval(tickClock, 1000); tickClock();
 
-document.getElementById("updated").innerText = data.updated;
-document.getElementById("sunrise").innerText = data.sunrise;
-document.getElementById("sunset").innerText = data.sunset;
+/* ============ Auto night mode ============ */
+function autoNight(){
+  const h = new Date().getHours();
+  const night = (h >= 18 || h < 6);
+  const saved = localStorage.getItem("mode");
+  if(saved){
+    document.body.classList.toggle("night", saved === "night");
+    return;
+  }
+  document.body.classList.toggle("night", night);
+}
+autoNight();
 
-document.getElementById("min").innerText = data.min;
-document.getElementById("max").innerText = data.max;
+const modeBtn = document.getElementById("modeBtn");
+function updateModeBtn(){
+  const isNight = document.body.classList.contains("night");
+  modeBtn.textContent = isNight ? "☀️ Day" : "🌙 Night";
+}
+updateModeBtn();
 
-document.getElementById("rainChance").innerText = data.rain_chance;
-document.getElementById("rainTotal").innerText = data.rain_total;
-document.getElementById("rain30").innerText = data.rain_30min;
-
-document.getElementById("wind").innerText = data.wind_speed;
-document.getElementById("windDir").innerText = data.wind_dir;
-document.getElementById("uv").innerText = data.uv;
-
-let weekHTML = "";
-data.week.forEach(day=>{
-  weekHTML += `
-    <div class="dayCard">
-      <b>${day.date}</b><br>
-      🌡️ ${day.min}° / ${day.max}°<br>
-      🌧️ ${day.rain}% (${day.rain_total}mm)<br>
-      💨 ${day.wind} ${day.wind_dir}<br>
-      ☀️ UV ${day.uv}<br>
-      🌅 ${day.sunrise}<br>
-      🌇 ${day.sunset}
-    </div>
-  `;
+modeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("night");
+  localStorage.setItem("mode", document.body.classList.contains("night") ? "night" : "day");
+  updateModeBtn();
 });
 
-document.getElementById("week").innerHTML = weekHTML;
+/* ============ Helpers ============ */
+function val(x, fallback="—"){
+  if(x === undefined || x === null) return fallback;
+  if(typeof x === "string" && x.trim() === "") return fallback;
+  return x;
+}
 
-});
+/* ============ Load data.json ============ */
+fetch("data.json", { cache: "no-store" })
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("updated").innerText = val(data.updated_at || data.updated);
+
+    const tmin = data.tmin ?? data.min;
+    const tmax = data.tmax ?? data.max;
+
+    document.getElementById("tmin").innerText = val(tmin);
+    document.getElementById("tmax").innerText = val(tmax) + "°";
+    document.getElementById("tmax2").innerText = val(tmax);
+
+    document.getElementById("sunrise").innerText = val(data.sunrise);
+    document.getElementById("sunset").innerText = val(data.sunset);
+
+    document.getElementById("rainChance").innerText = val(data.rain_chance ?? data.rainChance);
+    document.getElementById("rain30").innerText = val(data.rain_30min ?? data.rain30);
+
+    const windTxt = data.wind_text ?? data.wind;
+    document.getElementById("wind").innerText = val(windTxt);
+
+    document.getElementById("uv").innerText = val(data.uv_index ?? data.uv);
+
+    document.getElementById("msg").innerText = val(data.message, "");
+
+    // Week view
+    const week = data.week || [];
+    const weekDiv = document.getElementById("week");
+    if(!week.length){
+      weekDiv.innerHTML = `<div class="warn">Geen 7 dae data nie.</div>`;
+      return;
+    }
+
+    weekDiv.innerHTML = week.map(d => `
+      <div class="day">
+        <div class="dtitle">${val(d.label || d.date)}</div>
+        <div class="row"><span>🌡️ Min/Max</span> <b>${val(d.min)}° / ${val(d.max)}°</b></div>
+        <div class="row"><span>🌧️ Reën</span> <b>${val(d.rain)}%</b></div>
+        <div class="row"><span>💨 Wind</span> <b>${val(d.wind)}</b></div>
+        <div class="row"><span>🌅/🌇</span> <b>${val(d.sunrise)} • ${val(d.sunset)}</b></div>
+        <div class="row"><span>☀️ UV</span> <b>${val(d.uv)}</b></div>
+      </div>
+    `).join("");
+  })
+  .catch(err => {
+    document.getElementById("msg").innerText = "Kon nie data laai nie.";
+    console.error(err);
+  });
 </script>
 
 </body>
