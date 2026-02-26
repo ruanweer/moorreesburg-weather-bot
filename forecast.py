@@ -86,4 +86,5 @@ def send_telegram(text: str):
         die("Telegram response was not JSON. See body above.")
 
     if not j.get("ok"):
-        die(f
+        die(f)
+        
