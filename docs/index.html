@@ -1,36 +1,285 @@
 <!doctype html>
-<html>
+<html lang="af">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1220" />
   <title>Ruan Weer Stasie</title>
+
+  <style>
+    :root{
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: rgba(15,23,42,.10);
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
+      --accent: #2563eb;
+      --pill: rgba(37,99,235,.10);
+    }
+    :root[data-theme="dark"]{
+      --bg: #0b1220;
+      --card: rgba(255,255,255,.06);
+      --text: #e5e7eb;
+      --muted: #a7b1c2;
+      --border: rgba(255,255,255,.10);
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --accent: #60a5fa;
+      --pill: rgba(96,165,250,.16);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1100px 600px at 10% -10%, rgba(37,99,235,.15), transparent 60%),
+                  radial-gradient(900px 500px at 90% 10%, rgba(16,185,129,.12), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:18px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:12px;margin-bottom:14px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      font-weight:800;font-size:26px;letter-spacing:.2px;
+    }
+    .brand .emoji{font-size:28px}
+    .sub{
+      color:var(--muted);font-size:14px;margin-top:2px
+    }
+    .right{
+      display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border:1px solid var(--border);
+      border-radius:999px;background:var(--card);box-shadow:var(--shadow);
+      font-size:14px;color:var(--muted);
+    }
+    .btn{
+      border:1px solid var(--border);
+      background:var(--card);
+      color:var(--text);
+      padding:8px 12px;border-radius:999px;
+      box-shadow:var(--shadow);
+      font-weight:700;cursor:pointer;
+    }
+    .btn:active{transform:translateY(1px)}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:12px;
+    }
+    .card{
+      grid-column: span 12;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+    .card h3{margin:0 0 10px 0;font-size:15px;color:var(--muted);font-weight:800;letter-spacing:.3px;text-transform:uppercase}
+    .big{
+      font-size:44px;font-weight:900;line-height:1.05;margin:2px 0 4px 0;
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .kv{
+      flex:1 1 160px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:10px 12px;
+    }
+    :root:not([data-theme="dark"]) .kv{background:rgba(2,6,23,.03)}
+    .k{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.25px}
+    .v{margin-top:6px;font-size:18px;font-weight:900}
+
+    .msg{
+      white-space:pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:15px;line-height:1.45;
+      margin:0;
+    }
+
+    .mini{
+      color:var(--muted);font-size:12px
+    }
+
+    @media (min-width: 740px){
+      .card.span6{grid-column: span 6}
+      .card.span7{grid-column: span 7}
+      .card.span5{grid-column: span 5}
+      .big{font-size:52px}
+    }
+  </style>
 </head>
 
-<body style="font-family: Arial; max-width: 600px; margin: auto; padding: 20px;">
-  <h2>🌤️ Ruan Weer Stasie</h2>
-  <p id="updated">Laai...</p>
-  <pre id="msg">...</pre>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="brand"><span class="emoji">🌤️</span>Ruan Weer Stasie</div>
+        <div class="sub" id="updated">Laai…</div>
+      </div>
+
+      <div class="right">
+        <div class="pill" id="statusPill">🔄 Laai data…</div>
+        <button class="btn" id="themeBtn" type="button">🌓 Tema</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card span7">
+        <h3>Opsomming</h3>
+        <div class="row">
+          <div class="kv">
+            <div class="k">Temperatuur</div>
+            <div class="v" id="tempLine">—</div>
+          </div>
+          <div class="kv">
+            <div class="k">Reën</div>
+            <div class="v" id="rainLine">—</div>
+          </div>
+          <div class="kv">
+            <div class="k">Wind</div>
+            <div class="v" id="windLine">—</div>
+          </div>
+          <div class="kv">
+            <div class="k">UV</div>
+            <div class="v" id="uvLine">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card span5">
+        <h3>Volle boodskap</h3>
+        <pre class="msg" id="msg">…</pre>
+        <div class="mini" id="autoInfo"></div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    async function load(){
-      try {
-        const r = await fetch("data.json?ts=" + Date.now());
-        const j = await r.json();
+    // ---------- Theme handling ----------
+    const root = document.documentElement;
+    const themeBtn = document.getElementById("themeBtn");
 
-        document.getElementById("updated").innerText =
-          "Laas opgedateer: " + j.updated_at;
+    function systemPrefersDark() {
+      return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
 
-        document.getElementById("msg").innerText =
-          j.message;
+    function applyTheme(theme) {
+      // theme: "dark" | "light"
+      root.setAttribute("data-theme", theme);
+      // theme-color for browser UI
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute("content", theme === "dark" ? "#0b1220" : "#f7f8fb");
+    }
 
-      } catch (e) {
-        document.getElementById("updated").innerText =
-          "Kon nie data laai nie.";
+    function initTheme() {
+      const saved = localStorage.getItem("ruan_theme"); // "dark"|"light"|"auto"|null
+      if (!saved || saved === "auto") {
+        applyTheme(systemPrefersDark() ? "dark" : "light");
+      } else {
+        applyTheme(saved);
+      }
+      // Listen to system changes if on auto
+      if (!saved || saved === "auto") {
+        const mq = window.matchMedia("(prefers-color-scheme: dark)");
+        if (mq && mq.addEventListener) {
+          mq.addEventListener("change", () => applyTheme(systemPrefersDark() ? "dark" : "light"));
+        }
       }
     }
 
+    themeBtn.addEventListener("click", () => {
+      // cycle: auto -> dark -> light -> auto
+      const saved = localStorage.getItem("ruan_theme") || "auto";
+      let next = "auto";
+      if (saved === "auto") next = "dark";
+      else if (saved === "dark") next = "light";
+      else next = "auto";
+
+      localStorage.setItem("ruan_theme", next);
+      if (next === "auto") applyTheme(systemPrefersDark() ? "dark" : "light");
+      else applyTheme(next);
+
+      showAutoInfo();
+    });
+
+    function showAutoInfo() {
+      const saved = localStorage.getItem("ruan_theme") || "auto";
+      const info = document.getElementById("autoInfo");
+      const sys = systemPrefersDark() ? "dark" : "light";
+      if (saved === "auto") info.textContent = `Tema: Auto (foon: ${sys})`;
+      else info.textContent = `Tema: ${saved} (foon: ${sys})`;
+    }
+
+    // ---------- Data loading ----------
+    const updatedEl = document.getElementById("updated");
+    const msgEl = document.getElementById("msg");
+    const statusPill = document.getElementById("statusPill");
+
+    const tempLine = document.getElementById("tempLine");
+    const rainLine = document.getElementById("rainLine");
+    const windLine = document.getElementById("windLine");
+    const uvLine   = document.getElementById("uvLine");
+
+    function pick(regex, text) {
+      const m = text.match(regex);
+      return m ? m[1] : null;
+    }
+
+    function updateSummaryFromMessage(message) {
+      // probe lines from your existing message format
+      const tmin = pick(/Min:\s*([0-9.]+)°C/i, message);
+      const tmax = pick(/Max:\s*([0-9.]+)°C/i, message);
+
+      const rainChance = pick(/Reën\s*kans:\s*([0-9.]+)%/i, message);
+      const rainTot = pick(/Reën\s*totaal:\s*([0-9.]+)\s*mm/i, message);
+
+      const wind = pick(/Wind:\s*([0-9.]+)\s*km\/h\s*([A-Z]+)/i, message); // wind speed
+      const windDir = pick(/Wind:\s*[0-9.]+\s*km\/h\s*([A-Z]+)/i, message);
+
+      const uv = pick(/UV\s*Index:\s*([0-9.]+)/i, message);
+
+      tempLine.textContent = (tmin && tmax) ? `${tmin}°C → ${tmax}°C` : "—";
+      rainLine.textContent = (rainChance || rainTot) ? `${rainChance ?? "—"}% | ${rainTot ?? "—"} mm` : "—";
+      windLine.textContent = (wind || windDir) ? `${wind ?? "—"} km/h ${windDir ?? ""}`.trim() : "—";
+      uvLine.textContent   = uv ? uv : "—";
+    }
+
+    async function load() {
+      try{
+        statusPill.textContent = "🔄 Laai data…";
+
+        const r = await fetch("data.json?ts=" + Date.now(), { cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        const j = await r.json();
+
+        updatedEl.textContent = "Laas opgedateer: " + (j.updated_at || "unknown");
+        msgEl.textContent = j.message || "Geen boodskap nie.";
+        updateSummaryFromMessage(j.message || "");
+
+        statusPill.textContent = "✅ Live";
+      }catch(e){
+        updatedEl.textContent = "Kon nie data laai nie.";
+        msgEl.textContent = "…";
+        statusPill.textContent = "⚠️ Fout";
+        console.log(e);
+      }
+    }
+
+    // Init
+    initTheme();
+    showAutoInfo();
     load();
-    setInterval(load, 60000);
+    setInterval(load, 5 * 60 * 1000); // elke 5 min
   </script>
 </body>
 </html>
