@@ -17,7 +17,7 @@ def get_forecast():
         "latitude": LAT,
         "longitude": LON,
         "timezone": "Africa/Johannesburg",
-        "hourly": "precipitation_probability,precipitation,temperature_2m",
+        "hourly": "precipitation_probability,precipitation,temperature_2m,windspeed_10m",
         "forecast_days": 1,
     }
 
@@ -32,6 +32,7 @@ def build_message(data):
     pops = hourly.get("precipitation_probability", [])
     mm = hourly.get("precipitation", [])
     temps = hourly.get("temperature_2m", [])
+    winds = hourly.get("windspeed_10m", [])
 
     if not times:
         return "Geen data ontvang vir vandag nie."
@@ -40,7 +41,9 @@ def build_message(data):
     total_mm = sum(mm) if mm else 0.0
     tmin = min(temps) if temps else None
     tmax = max(temps) if temps else None
+    max_wind = max(winds) if winds else 0
 
+    # Reën vensters: ure waar kans >= 50% of reën >= 0.2mm
     lines = []
     for t, p, r in zip(times, pops, mm):
         hour = int(t.split("T")[1].split(":")[0])
@@ -49,12 +52,14 @@ def build_message(data):
 
     hourly_block = "\n".join(lines) if lines else "Geen groot reën venster vandag."
 
-    msg = f"🌦️ Moorreesburg\n"
+    msg = "🌦️ Moorreesburg\n"
 
     if tmin is not None and tmax is not None:
         msg += f"🌡️ Temp: {tmin:.0f}°C – {tmax:.0f}°C\n"
 
-    msg += f"🌧️ Maks kans: {max_pop:.0f}% | Tot reën: {total_mm:.1f}mm\n\n"
+    msg += f"🌧️ Maks kans: {max_pop:.0f}% | Tot reën: {total_mm:.1f}mm\n"
+    msg += f"💨 Maks wind: {max_wind:.0f} km/h\n\n"
+
     msg += "⏱️ Reën vensters:\n"
     msg += hourly_block
 
