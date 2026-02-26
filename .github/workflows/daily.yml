@@ -21,8 +21,16 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run forecast
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python forecast.py
+- name: Run forecast
+  env:
+    TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  run: |
+    echo "Files in folder:"
+    ls -la
+
+    echo "---- forecast.py content ----"
+    sed -n '1,200p' forecast.py
+
+    echo "---- Running ----"
+    python -u forecast.py
