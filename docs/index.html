@@ -1,111 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="af">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ruan Weer Stasie</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-:root {
-  --bg: #f4f6f9;
-  --card: #ffffff;
-  --text: #1f2937;
+:root{
+  --bg:#f2f4f8;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --accent:#3b82f6;
 }
 
-body.dark {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --text: #f1f5f9;
+body.dark{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#f1f5f9;
+  --muted:#94a3b8;
+  --accent:#3b82f6;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding: 20px;
+body{
+  margin:0;
+  font-family:system-ui,-apple-system;
+  background:var(--bg);
+  color:var(--text);
 }
 
-.container {
-  max-width: 800px;
-  margin: auto;
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+h1{
+  font-size:32px;
+  margin-bottom:5px;
 }
 
-.toggle {
-  font-size: 20px;
-  cursor: pointer;
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.badge {
-  background: var(--card);
-  padding: 8px 14px;
-  border-radius: 20px;
-  margin-top: 10px;
-  display: inline-block;
-  font-weight: bold;
+.toggle{
+  font-size:22px;
+  cursor:pointer;
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-top: 20px;
+.badge{
+  background:var(--card);
+  padding:8px 14px;
+  border-radius:20px;
+  display:inline-block;
+  margin:6px 0;
+  font-weight:600;
 }
 
-.card {
-  background: var(--card);
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-  text-align: center;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+  margin-top:20px;
 }
 
-.card h3 {
-  margin: 0;
-  font-size: 14px;
-  opacity: 0.7;
+.card{
+  background:var(--card);
+  padding:20px;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  text-align:center;
 }
 
-.card .value {
-  margin-top: 8px;
-  font-size: 22px;
-  font-weight: bold;
+.card h3{
+  margin:0;
+  font-size:15px;
+  color:var(--muted);
 }
 
-.section {
-  margin-top: 35px;
+.big{
+  font-size:28px;
+  font-weight:700;
+  margin-top:6px;
 }
 
-details summary {
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
-  background: var(--card);
-  padding: 15px;
-  border-radius: 15px;
+button{
+  margin-top:20px;
+  padding:10px 20px;
+  border:none;
+  border-radius:12px;
+  background:var(--accent);
+  color:white;
+  font-size:15px;
+  cursor:pointer;
 }
 
-.week-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-top: 15px;
+details{
+  margin-top:30px;
 }
 
-button {
-  margin-top: 15px;
-  padding: 10px 16px;
-  border-radius: 10px;
-  border: none;
-  background: #2563eb;
-  color: white;
-  font-weight: bold;
+.week-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:20px;
 }
 </style>
 </head>
@@ -113,102 +114,103 @@ button {
 <body>
 <div class="container">
 
-<div class="header">
-<h1>🌤️ Ruan Weer Stasie</h1>
-<div class="toggle" onclick="toggleDark()">🌙/☀️</div>
+<div class="topbar">
+  <h1>🌤 Ruan Weer Stasie</h1>
+  <div class="toggle" onclick="toggleDark()">🌙 / ☀️</div>
 </div>
 
-<div id="updated" class="badge">Laas opgedateer: ...</div>
+<div class="badge" id="updated"></div>
 <div class="badge">Plek: Moorreesburg</div>
 
-<div class="cards" id="todayCards"></div>
+<div class="grid" id="todayGrid"></div>
 
 <button onclick="location.reload()">Refresh</button>
 
-<div class="section">
 <details>
-<summary>📂 7 Dae Voorspelling</summary>
-<div class="week-grid" id="weekCards"></div>
+  <summary style="font-size:20px;font-weight:600;">📁 7 Dae Voorspelling</summary>
+  <div class="week-grid" id="weekGrid"></div>
 </details>
-</div>
 
 </div>
 
 <script>
+async function loadData(){
+  const res = await fetch('data.json?'+Date.now());
+  const data = await res.json();
+
+  document.getElementById("updated").innerText =
+    "Laas opgedateer: " + data.updated_at;
+
+  const today = data.week[0];
+
+  document.getElementById("todayGrid").innerHTML = `
+    <div class="card">
+      <h3>🌅 Son op</h3>
+      <div class="big">${today.sunrise}</div>
+    </div>
+
+    <div class="card">
+      <h3>🌇 Son sak</h3>
+      <div class="big">${today.sunset}</div>
+    </div>
+
+    <div class="card">
+      <h3>🌡 Minimum</h3>
+      <div class="big">${today.min}°C</div>
+    </div>
+
+    <div class="card">
+      <h3>🌡 Maksimum</h3>
+      <div class="big">${today.max}°C</div>
+    </div>
+
+    <div class="card">
+      <h3>🌧 Reën kans</h3>
+      <div class="big">${today.rain_prob}%</div>
+    </div>
+
+    <div class="card">
+      <h3>⏱ Reën volgende 30min</h3>
+      <div class="big">${data.next30_rain_prob}%</div>
+    </div>
+
+    <div class="card">
+      <h3>💨 Wind</h3>
+      <div class="big">${today.wind_kmh} km/h ${today.wind_dir}</div>
+    </div>
+
+    <div class="card">
+      <h3>☀ UV Index</h3>
+      <div class="big">${today.uv}</div>
+    </div>
+  `;
+
+  let weekHTML = "";
+  data.week.forEach(day=>{
+    weekHTML += `
+      <div class="card">
+        <h3>${day.date}</h3>
+        <div class="big">${day.min}° / ${day.max}°</div>
+        <p>🌧 ${day.rain_prob}%</p>
+        <p>💨 ${day.wind_kmh} km/h ${day.wind_dir}</p>
+        <p>☀ UV ${day.uv}</p>
+        <p>🌅 ${day.sunrise}</p>
+        <p>🌇 ${day.sunset}</p>
+      </div>
+    `;
+  });
+
+  document.getElementById("weekGrid").innerHTML = weekHTML;
+}
+
 function toggleDark(){
   document.body.classList.toggle("dark");
 }
 
-fetch("data.json")
-.then(r => r.json())
-.then(data => {
+loadData();
 
-document.getElementById("updated").innerText =
-"Laas opgedateer: " + data.updated_at;
-
-let today = data.week[0];
-
-document.getElementById("todayCards").innerHTML = `
-<div class="card">
-<h3>🌅 Son op</h3>
-<div class="value">${today.sunrise}</div>
-</div>
-
-<div class="card">
-<h3>🌇 Son sak</h3>
-<div class="value">${today.sunset}</div>
-</div>
-
-<div class="card">
-<h3>🌡 Minimum</h3>
-<div class="value">${today.min}°C</div>
-</div>
-
-<div class="card">
-<h3>🌡 Maksimum</h3>
-<div class="value">${today.max}°C</div>
-</div>
-
-<div class="card">
-<h3>🌧 Reën kans</h3>
-<div class="value">${today.rain_prob}%</div>
-</div>
-
-<div class="card">
-<h3>⏱ Reën volgende 30min</h3>
-<div class="value">${data.next30_rain_prob}%</div>
-</div>
-
-<div class="card">
-<h3>💨 Wind</h3>
-<div class="value">${today.wind_kmh} km/h ${today.wind_dir}</div>
-</div>
-
-<div class="card">
-<h3>☀️ UV Index</h3>
-<div class="value">${today.uv}</div>
-</div>
-`;
-
-let weekHTML = "";
-
-data.week.forEach(day => {
-weekHTML += `
-<div class="card">
-<h3>${day.date}</h3>
-<div class="value">${day.min}° / ${day.max}°</div>
-<p>🌧 ${day.rain_prob}%</p>
-<p>💨 ${day.wind_kmh} km/h ${day.wind_dir}</p>
-<p>☀️ UV ${day.uv}</p>
-<p>🌅 ${day.sunrise}</p>
-<p>🌇 ${day.sunset}</p>
-</div>
-`;
-});
-
-document.getElementById("weekCards").innerHTML = weekHTML;
-
-});
+// Auto refresh elke 10 minute
+setInterval(loadData, 10 * 60 * 1000);
 </script>
 
 </body>
