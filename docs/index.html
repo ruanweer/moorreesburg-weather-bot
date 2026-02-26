@@ -6,211 +6,210 @@
 <title>Ruan Weer Stasie</title>
 
 <style>
-:root{
-  --bg:#f2f4f8;
-  --card:#ffffff;
-  --text:#1f2937;
-  --muted:#6b7280;
-  --accent:#3b82f6;
-}
-
-body.dark{
-  --bg:#0f172a;
-  --card:#1e293b;
-  --text:#f1f5f9;
-  --muted:#94a3b8;
-  --accent:#3b82f6;
-}
-
 body{
+  font-family:Arial, sans-serif;
+  background:#f3f4f6;
   margin:0;
-  font-family:system-ui,-apple-system;
-  background:var(--bg);
-  color:var(--text);
-}
-
-.container{
-  max-width:1100px;
-  margin:auto;
   padding:20px;
+  color:#111827;
 }
 
 h1{
-  font-size:32px;
-  margin-bottom:5px;
+  font-size:28px;
 }
 
-.topbar{
+.header{
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 
-.toggle{
-  font-size:22px;
+button{
+  padding:10px 16px;
+  border:none;
+  border-radius:12px;
+  background:#2563eb;
+  color:white;
+  font-weight:bold;
   cursor:pointer;
 }
 
-.badge{
-  background:var(--card);
-  padding:8px 14px;
-  border-radius:20px;
-  display:inline-block;
-  margin:6px 0;
-  font-weight:600;
+.info{
+  margin-top:10px;
+  font-size:14px;
+  color:#6b7280;
 }
 
+/* GRID 2 BLOKKE OP PHONE */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:18px;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
   margin-top:20px;
 }
 
+/* 4 BLOKKE OP GROOT SKERM */
+@media (min-width:900px){
+  .grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
+
 .card{
-  background:var(--card);
-  padding:20px;
+  background:white;
+  padding:18px;
   border-radius:18px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
   text-align:center;
 }
 
 .card h3{
-  margin:0;
-  font-size:15px;
-  color:var(--muted);
+  margin:5px 0;
+  font-size:14px;
+  color:#6b7280;
 }
 
-.big{
-  font-size:28px;
-  font-weight:700;
-  margin-top:6px;
+.card p{
+  margin:5px 0;
+  font-size:22px;
+  font-weight:bold;
 }
 
-button{
-  margin-top:20px;
-  padding:10px 20px;
-  border:none;
-  border-radius:12px;
-  background:var(--accent);
-  color:white;
-  font-size:15px;
+/* 7 DAE */
+.week-toggle{
+  margin-top:25px;
   cursor:pointer;
-}
-
-details{
-  margin-top:30px;
+  font-weight:bold;
+  font-size:18px;
 }
 
 .week-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
-  margin-top:20px;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-top:15px;
+}
+
+@media (min-width:900px){
+  .week-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+.hidden{
+  display:none;
 }
 </style>
 </head>
 
 <body>
-<div class="container">
 
-<div class="topbar">
+<div class="header">
   <h1>🌤 Ruan Weer Stasie</h1>
-  <div class="toggle" onclick="toggleDark()">🌙 / ☀️</div>
 </div>
 
-<div class="badge" id="updated"></div>
-<div class="badge">Plek: Moorreesburg</div>
-
-<div class="grid" id="todayGrid"></div>
-
-<button onclick="location.reload()">Refresh</button>
-
-<details>
-  <summary style="font-size:20px;font-weight:600;">📁 7 Dae Voorspelling</summary>
-  <div class="week-grid" id="weekGrid"></div>
-</details>
-
+<div class="info">
+  Laas opgedateer: <span id="updated"></span><br>
+  Plek: Moorreesburg
 </div>
+
+<div class="grid">
+  <div class="card">
+    <h3>🌅 Son op</h3>
+    <p id="sunrise"></p>
+  </div>
+
+  <div class="card">
+    <h3>🌇 Son sak</h3>
+    <p id="sunset"></p>
+  </div>
+
+  <div class="card">
+    <h3>🌡 Minimum</h3>
+    <p id="min"></p>
+  </div>
+
+  <div class="card">
+    <h3>🌡 Maksimum</h3>
+    <p id="max"></p>
+  </div>
+
+  <div class="card">
+    <h3>🌧 Reën kans</h3>
+    <p id="rain"></p>
+  </div>
+
+  <div class="card">
+    <h3>⏱ Reën volgende 30min</h3>
+    <p id="rain30"></p>
+  </div>
+
+  <div class="card">
+    <h3>💨 Wind</h3>
+    <p id="wind"></p>
+  </div>
+
+  <div class="card">
+    <h3>☀ UV Index</h3>
+    <p id="uv"></p>
+  </div>
+</div>
+
+<button onclick="loadData()" style="margin-top:20px;">Refresh</button>
+
+<div class="week-toggle" onclick="toggleWeek()">
+  ▶ 7 Dae Voorspelling
+</div>
+
+<div id="weekSection" class="week-grid hidden"></div>
 
 <script>
+
 async function loadData(){
-  const res = await fetch('data.json?'+Date.now());
+  const res = await fetch("data.json");
   const data = await res.json();
 
-  document.getElementById("updated").innerText =
-    "Laas opgedateer: " + data.updated_at;
+  document.getElementById("updated").innerText = data.updated_at;
 
   const today = data.week[0];
 
-  document.getElementById("todayGrid").innerHTML = `
-    <div class="card">
-      <h3>🌅 Son op</h3>
-      <div class="big">${today.sunrise}</div>
-    </div>
+  document.getElementById("sunrise").innerText = today.sunrise;
+  document.getElementById("sunset").innerText = today.sunset;
+  document.getElementById("min").innerText = today.min + "°C";
+  document.getElementById("max").innerText = today.max + "°C";
+  document.getElementById("rain").innerText = today.rain_prob + "%";
+  document.getElementById("rain30").innerText = data.next30_rain_prob + "%";
+  document.getElementById("wind").innerText = today.wind_kmh + " km/h " + today.wind_dir;
+  document.getElementById("uv").innerText = today.uv;
 
-    <div class="card">
-      <h3>🌇 Son sak</h3>
-      <div class="big">${today.sunset}</div>
-    </div>
+  // 7 dae
+  const weekDiv = document.getElementById("weekSection");
+  weekDiv.innerHTML = "";
 
-    <div class="card">
-      <h3>🌡 Minimum</h3>
-      <div class="big">${today.min}°C</div>
-    </div>
-
-    <div class="card">
-      <h3>🌡 Maksimum</h3>
-      <div class="big">${today.max}°C</div>
-    </div>
-
-    <div class="card">
-      <h3>🌧 Reën kans</h3>
-      <div class="big">${today.rain_prob}%</div>
-    </div>
-
-    <div class="card">
-      <h3>⏱ Reën volgende 30min</h3>
-      <div class="big">${data.next30_rain_prob}%</div>
-    </div>
-
-    <div class="card">
-      <h3>💨 Wind</h3>
-      <div class="big">${today.wind_kmh} km/h ${today.wind_dir}</div>
-    </div>
-
-    <div class="card">
-      <h3>☀ UV Index</h3>
-      <div class="big">${today.uv}</div>
-    </div>
-  `;
-
-  let weekHTML = "";
   data.week.forEach(day=>{
-    weekHTML += `
-      <div class="card">
-        <h3>${day.date}</h3>
-        <div class="big">${day.min}° / ${day.max}°</div>
-        <p>🌧 ${day.rain_prob}%</p>
-        <p>💨 ${day.wind_kmh} km/h ${day.wind_dir}</p>
-        <p>☀ UV ${day.uv}</p>
-        <p>🌅 ${day.sunrise}</p>
-        <p>🌇 ${day.sunset}</p>
-      </div>
+    const card = document.createElement("div");
+    card.className="card";
+    card.innerHTML = `
+      <h3>${day.date}</h3>
+      <p>${day.min}° / ${day.max}°</p>
+      <p>🌧 ${day.rain_prob}%</p>
+      <p>💨 ${day.wind_kmh} km/h ${day.wind_dir}</p>
+      <p>☀ UV ${day.uv}</p>
     `;
+    weekDiv.appendChild(card);
   });
-
-  document.getElementById("weekGrid").innerHTML = weekHTML;
 }
 
-function toggleDark(){
-  document.body.classList.toggle("dark");
+function toggleWeek(){
+  const section = document.getElementById("weekSection");
+  section.classList.toggle("hidden");
 }
 
 loadData();
 
-// Auto refresh elke 10 minute
-setInterval(loadData, 10 * 60 * 1000);
+/* AUTO REFRESH ELKE 10 MIN */
+setInterval(loadData, 600000);
+
 </script>
 
 </body>
