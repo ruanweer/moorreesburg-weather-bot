@@ -1,96 +1,90 @@
-#!/usr/bin/env python3
 import os
+import sys
 import json
-import math
-from datetime import datetime
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+from datetime import datetime
 
-TIMEZONE = "Africa/Johannesburg"
+LAT = -33.154
+LON = 18.660
 
-PLACES = [
-    ("Moorreesburg", -33.152, 18.660),
-    ("Malmesbury",   -33.460, 18.730),
-    ("Piketberg",    -32.903, 18.757),
-    ("Porterville",  -33.010, 19.013),
-    ("Darling",      -33.378, 18.381),
-]
 
-DASHBOARD_JSON_PATH = "docs/data.json"
+def die(msg):
+    print(msg, flush=True)
+    sys.exit(1)
 
 
 def deg_to_compass(deg):
-    dirs = ["N","NE","E","SE","S","SW","W","NW"]
     if deg is None:
         return "?"
+    dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
     ix = int((deg + 22.5) // 45) % 8
     return dirs[ix]
 
 
-def get_weather(lat, lon):
-    url = "https://api.open-meteo.com/v1/forecast"
-    params = {
-        "latitude": lat,
-        "longitude": lon,
-        "timezone": TIMEZONE,
-        "daily": ",".join([
-            "temperature_2m_min",
-            "temperature_2m_max",
-            "precipitation_sum",
-            "precipitation_probability_max",
-            "windspeed_10m_max",
-            "winddirection_10m_dominant",
-            "uv_index_max",
-        ]),
-        "forecast_days": 1,
-    }
-    r = requests.get(url, params=params, timeout=30)
+# ---- Retry Session (fix SSL issues in GitHub) ----
+session = requests.Session()
+retry = Retry(
+    total=3,
+    backoff_factor=1,
+    status_forcelist=[500, 502, 503, 504],
+)
+adapter = HTTPAdapter(max_retries=retry)
+session.mount("https://", adapter)
+
+
+url = (
+    "https://api.open-meteo.com/v1/forecast?"
+    f"latitude={LAT}&longitude={LON}"
+    "&timezone=Africa%2FJohannesburg"
+    "&daily=temperature_2m_min,temperature_2m_max,"
+    "precipitation_sum,precipitation_probability_max,"
+    "windspeed_10m_max,winddirection_10m_dominant,uv_index_max"
+    "&forecast_days=1"
+)
+
+try:
+    r = session.get(url, timeout=20)
     r.raise_for_status()
-    return r.json()
+    data = r.json()
+except Exception as e:
+    die(f"API error: {e}")
 
 
-def build_message(name, data):
-    daily = data["daily"]
-
-    tmin = daily["temperature_2m_min"][0]
-    tmax = daily["temperature_2m_max"][0]
-    rain = daily["precipitation_sum"][0]
-    pop = daily["precipitation_probability_max"][0]
-    wind = daily["windspeed_10m_max"][0]
-    wind_dir = daily["winddirection_10m_dominant"][0]
-    uv = daily["uv_index_max"][0]
-
-    wind_txt = deg_to_compass(wind_dir)
-
-    return f"""🌤️ {name}
-
-🌡️ Temp: {tmin:.0f}°C – {tmax:.0f}°C
-🌧️ Reën: maks kans {pop:.0f}% | totaal {rain:.1f}mm
-💨 Wind: maks {wind:.0f} km/h ({wind_txt})
-🧴 UV: maks {uv:.1f}
-"""
+daily = data.get("daily")
+if not daily:
+    die("No daily data returned")
 
 
-def main():
-    messages = []
+tmin = daily["temperature_2m_min"][0]
+tmax = daily["temperature_2m_max"][0]
+rain = daily["precipitation_sum"][0]
+rain_prob = daily["precipitation_probability_max"][0]
+wind_speed = daily["windspeed_10m_max"][0]
+wind_dir = daily["winddirection_10m_dominant"][0]
+uv = daily["uv_index_max"][0]
 
-    for name, lat, lon in PLACES:
-        data = get_weather(lat, lon)
-        messages.append(build_message(name, data))
+compass = deg_to_compass(wind_dir)
 
-    final_text = "\n".join(messages)
+message = (
+    f"🌤 Weer vir vandag:\n\n"
+    f"🌡 Min: {tmin}°C\n"
+    f"🌡 Max: {tmax}°C\n\n"
+    f"🌧 Reën kans: {rain_prob}%\n"
+    f"🌧 Reën totaal: {rain} mm\n\n"
+    f"💨 Wind: {wind_speed} km/h {compass}\n"
+    f"☀ UV Index: {uv}"
+)
 
-    output = {
-        "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
-        "message": final_text
-    }
+output = {
+    "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+    "message": message
+}
 
-    os.makedirs("docs", exist_ok=True)
+os.makedirs("docs", exist_ok=True)
 
-    with open(DASHBOARD_JSON_PATH, "w", encoding="utf-8") as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
+with open("docs/data.json", "w") as f:
+    json.dump(output, f, indent=2)
 
-    print("Dashboard updated.")
-
-
-if __name__ == "__main__":
-    main()
+print("Forecast saved successfully.")
