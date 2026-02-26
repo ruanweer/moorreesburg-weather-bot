@@ -1,12 +1,15 @@
-name: Daily Moorreesburg Forecast
+name: Run Weather Bot
 
 on:
   schedule:
-    - cron: "0 4 * * *"
+    - cron: "0 * * * *"   # elke uur
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  run:
+  run-bot:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,15 +25,15 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run forecast
+        run: python forecast.py
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+      - name: Commit updated docs/data.json
         run: |
-          echo "Files in folder:"
-          ls -la
-
-          echo "---- forecast.py content ----"
-          sed -n '1,200p' forecast.py
-
-          echo "---- Running ----"
-          python -u forecast.py
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add docs/data.json
+          git commit -m "Auto update weather data" || echo "No changes"
+          git push
