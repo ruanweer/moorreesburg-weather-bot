@@ -1,398 +1,215 @@
-<!doctype html>
-<html lang="af">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ruan Weer Stasie</title>
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --text:#101828;
-      --muted:#667085;
-      --border:rgba(16,24,40,.10);
-      --shadow:0 10px 30px rgba(16,24,40,.08);
-      --pill:rgba(16,24,40,.06);
-    }
-    body.night{
-      --bg:#0b1220;
-      --card:#0f1a2e;
-      --text:#e6e9f2;
-      --muted:#a7b0c2;
-      --border:rgba(230,233,242,.12);
-      --shadow:0 12px 40px rgba(0,0,0,.35);
-      --pill:rgba(230,233,242,.10);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
-    .wrap{
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 22px 16px 40px;
-    }
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .title{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      font-weight: 900;
-      letter-spacing:-.02em;
-      font-size: clamp(28px, 4vw, 44px);
-    }
-    .sub{
-      margin: 6px 0 16px;
-      color:var(--muted);
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      align-items:center;
-      font-size: 14px;
-    }
-    .pill{
-      background:var(--pill);
-      border:1px solid var(--border);
-      padding: 6px 10px;
-      border-radius: 999px;
-    }
+<meta charset="UTF-8">
+<title>Ruan Weer Stasie</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    @media (min-width: 760px){
-      .grid{
-        grid-template-columns: 1.2fr .8fr;
-        align-items:start;
-      }
-    }
+<style>
+:root {
+  --bg: #f4f6f9;
+  --card: #ffffff;
+  --text: #1f2937;
+}
 
-    .card{
-      background:var(--card);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-    .card h2{
-      margin:0 0 12px;
-      font-size: 18px;
-      letter-spacing:-.01em;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
+body.dark {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #f1f5f9;
+}
 
-    .todayGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 8px;
-    }
-    @media (max-width:520px){
-      .todayGrid{ grid-template-columns: 1fr; }
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 20px;
+}
 
-    .tile{
-      border:1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px;
-      background: rgba(255,255,255,0.02);
-    }
-    .tile .k{
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 8px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .tile .v{
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing:-.02em;
-    }
-    .tile .small{
-      font-size: 16px;
-      font-weight: 700;
-    }
+.container {
+  max-width: 800px;
+  margin: auto;
+}
 
-    .btnRow{
-      display:flex;
-      gap:10px;
-      margin-top: 14px;
-      flex-wrap:wrap;
-    }
-    button{
-      appearance:none;
-      border:1px solid var(--border);
-      background:var(--pill);
-      color:var(--text);
-      padding: 10px 14px;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor:pointer;
-    }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    details{
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      overflow:hidden;
-      background:var(--card);
-      box-shadow: var(--shadow);
-    }
-    summary{
-      list-style:none;
-      cursor:pointer;
-      padding: 16px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      font-weight: 900;
-      letter-spacing:-.01em;
-      user-select:none;
-    }
-    summary::-webkit-details-marker{display:none;}
-    .chev{
-      font-size: 18px;
-      opacity:.8;
-      transform: rotate(0deg);
-      transition: transform .2s ease;
-    }
-    details[open] .chev{ transform: rotate(90deg); }
+.toggle {
+  font-size: 20px;
+  cursor: pointer;
+}
 
-    .weekWrap{
-      padding: 0 18px 18px;
-    }
-    .weekGrid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    @media (min-width: 760px){
-      .weekGrid{ grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 420px){
-      .weekGrid{ grid-template-columns: 1fr; }
-    }
-    .day{
-      border:1px solid var(--border);
-      border-radius: 18px;
-      padding: 12px;
-    }
-    .dtitle{
-      font-weight: 900;
-      margin-bottom: 8px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-    .row{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      font-size: 14px;
-      padding: 3px 0;
-    }
-    .row b{ font-weight: 800; }
+.badge {
+  background: var(--card);
+  padding: 8px 14px;
+  border-radius: 20px;
+  margin-top: 10px;
+  display: inline-block;
+  font-weight: bold;
+}
 
-    .note{
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 10px;
-      line-height:1.35;
-    }
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 20px;
+}
 
-    .topRight{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      align-items:center;
-    }
-    .toggle{
-      border:1px solid var(--border);
-      background:var(--pill);
-      padding: 8px 10px;
-      border-radius: 14px;
-      font-weight: 800;
-    }
-  </style>
+.card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.card .value {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.section {
+  margin-top: 35px;
+}
+
+details summary {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  background: var(--card);
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="title">🌤️ Ruan Weer Stasie</div>
-      <div class="topRight">
-        <span class="toggle" id="clock">--:--:--</span>
-        <button id="modeBtn" title="Night mode">🌙/☀️</button>
-      </div>
-    </header>
+<div class="container">
 
-    <div class="sub">
-      <span class="pill">Laas opgedateer: <b id="updated">laai...</b></span>
-      <span class="pill">Plek: <b>Paternoster</b></span>
-    </div>
+<div class="header">
+<h1>🌤️ Ruan Weer Stasie</h1>
+<div class="toggle" onclick="toggleDark()">🌙/☀️</div>
+</div>
 
-    <div class="grid">
-      <!-- TODAY -->
-      <div class="card">
-        <h2>🌞 Weer vir vandag</h2>
+<div id="updated" class="badge">Laas opgedateer: ...</div>
+<div class="badge">Plek: Moorreesburg</div>
 
-        <div class="todayGrid">
-          <div class="tile">
-            <div class="k">🌅 Son op</div>
-            <div class="v" id="sunrise">—</div>
-          </div>
+<div class="cards" id="todayCards"></div>
 
-          <div class="tile">
-            <div class="k">🌇 Son sak</div>
-            <div class="v" id="sunset">—</div>
-          </div>
+<button onclick="location.reload()">Refresh</button>
 
-          <div class="tile">
-            <div class="k">🌡️ Minimum</div>
-            <div class="v"><span id="tmin">—</span><span class="small">°C</span></div>
-          </div>
+<div class="section">
+<details>
+<summary>📂 7 Dae Voorspelling</summary>
+<div class="week-grid" id="weekCards"></div>
+</details>
+</div>
 
-          <div class="tile">
-            <div class="k">🌡️ Maksimum</div>
-            <div class="v"><span id="tmax2">—</span><span class="small">°C</span></div>
-          </div>
+</div>
 
-          <div class="tile">
-            <div class="k">🌧️ Reën kans vandag</div>
-            <div class="v"><span id="rainChance">—</span><span class="small">%</span></div>
-          </div>
+<script>
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
 
-          <div class="tile">
-            <div class="k">⏱️ Reën volgende 30min</div>
-            <div class="v"><span id="rain30">—</span><span class="small">%</span></div>
-          </div>
+fetch("data.json")
+.then(r => r.json())
+.then(data => {
 
-          <div class="tile">
-            <div class="k">💨 Wind</div>
-            <div class="v" id="wind">—</div>
-          </div>
+document.getElementById("updated").innerText =
+"Laas opgedateer: " + data.updated_at;
 
-          <div class="tile">
-            <div class="k">☀️ UV Index</div>
-            <div class="v" id="uv">—</div>
-          </div>
-        </div>
+let today = data.week[0];
 
-        <div class="btnRow">
-          <button onclick="location.reload()">Refresh</button>
-        </div>
+document.getElementById("todayCards").innerHTML = `
+<div class="card">
+<h3>🌅 Son op</h3>
+<div class="value">${today.sunrise}</div>
+</div>
 
-        <div class="note">
-          Let wel: GitHub Actions kan nie elke 10 minute loop op schedule nie (minimum is gewoonlik 1 uur).
-          Maar jy kan altyd “Run workflow” druk wanneer jy wil.
-        </div>
-      </div>
+<div class="card">
+<h3>🌇 Son sak</h3>
+<div class="value">${today.sunset}</div>
+</div>
 
-      <!-- WEEK -->
-      <details open>
-        <summary>
-          <span>📁 7 Dae Voorspelling</span>
-          <span class="chev">▶</span>
-        </summary>
-        <div class="weekWrap">
-          <div class="weekGrid" id="week">
-            <!-- filled by JS -->
-          </div>
-        </div>
-      </details>
+<div class="card">
+<h3>🌡 Minimum</h3>
+<div class="value">${today.min}°C</div>
+</div>
 
-    </div>
-  </div>
+<div class="card">
+<h3>🌡 Maksimum</h3>
+<div class="value">${today.max}°C</div>
+</div>
 
-  <script>
-    function pad(n){ return String(n).padStart(2,"0"); }
-    function tickClock(){
-      const d = new Date();
-      document.getElementById("clock").innerText =
-        `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    }
-    setInterval(tickClock, 1000); tickClock();
+<div class="card">
+<h3>🌧 Reën kans</h3>
+<div class="value">${today.rain_prob}%</div>
+</div>
 
-    // Night mode auto + button toggle
-    (function(){
-      const saved = localStorage.getItem("nightMode");
-      if(saved === "1") document.body.classList.add("night");
-      if(saved === "0") document.body.classList.remove("night");
+<div class="card">
+<h3>⏱ Reën volgende 30min</h3>
+<div class="value">${data.next30_rain_prob}%</div>
+</div>
 
-      if(saved === null){
-        const h = new Date().getHours();
-        if(h >= 18 || h < 6) document.body.classList.add("night");
-      }
-    })();
+<div class="card">
+<h3>💨 Wind</h3>
+<div class="value">${today.wind_kmh} km/h ${today.wind_dir}</div>
+</div>
 
-    document.getElementById("modeBtn").addEventListener("click", ()=>{
-      document.body.classList.toggle("night");
-      localStorage.setItem("nightMode", document.body.classList.contains("night") ? "1" : "0");
-    });
+<div class="card">
+<h3>☀️ UV Index</h3>
+<div class="value">${today.uv}</div>
+</div>
+`;
 
-    function val(x, fallback="—"){
-      if(x === undefined || x === null) return fallback;
-      return x;
-    }
+let weekHTML = "";
 
-    fetch("data.json?nocache=" + Date.now())
-    .then(r => r.json())
-    .then(data => {
-      document.getElementById("updated").innerText = val(data.updated_at);
+data.week.forEach(day => {
+weekHTML += `
+<div class="card">
+<h3>${day.date}</h3>
+<div class="value">${day.min}° / ${day.max}°</div>
+<p>🌧 ${day.rain_prob}%</p>
+<p>💨 ${day.wind_kmh} km/h ${day.wind_dir}</p>
+<p>☀️ UV ${day.uv}</p>
+<p>🌅 ${day.sunrise}</p>
+<p>🌇 ${day.sunset}</p>
+</div>
+`;
+});
 
-      if(!data.week || !data.week.length){
-        throw new Error("No week data in data.json");
-      }
+document.getElementById("weekCards").innerHTML = weekHTML;
 
-      const today = data.week[0];
+});
+</script>
 
-      document.getElementById("sunrise").innerText = val(today.sunrise);
-      document.getElementById("sunset").innerText  = val(today.sunset);
-
-      document.getElementById("tmin").innerText    = val(today.min);
-      document.getElementById("tmax2").innerText   = val(today.max);
-
-      document.getElementById("rainChance").innerText = val(today.rain_prob);
-      document.getElementById("rain30").innerText     = val(data.next30_rain_prob);
-
-      document.getElementById("wind").innerText =
-        `${val(today.wind_kmh)} km/h ${val(today.wind_dir)}`;
-
-      document.getElementById("uv").innerText = val(today.uv);
-
-      // Week cards
-      const weekDiv = document.getElementById("week");
-      weekDiv.innerHTML = data.week.map(d => `
-        <div class="day">
-          <div class="dtitle">${val(d.date)}</div>
-          <div class="row"><span>🌡️ Temp</span><b>${val(d.min)}° / ${val(d.max)}°</b></div>
-          <div class="row"><span>🌧️ Reën</span><b>${val(d.rain_prob)}%</b></div>
-          <div class="row"><span>💨 Wind</span><b>${val(d.wind_kmh)} ${val(d.wind_dir)}</b></div>
-          <div class="row"><span>🌅 Son op</span><b>${val(d.sunrise)}</b></div>
-          <div class="row"><span>🌇 Son sak</span><b>${val(d.sunset)}</b></div>
-          <div class="row"><span>☀️ UV</span><b>${val(d.uv)}</b></div>
-        </div>
-      `).join("");
-    })
-    .catch(err=>{
-      console.log(err);
-      document.getElementById("updated").innerText = "Kon nie data laai nie";
-    });
-  </script>
 </body>
 </html>
