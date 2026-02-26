@@ -14,14 +14,13 @@ body{
   color:#111827;
 }
 
-h1{
-  font-size:28px;
-}
+h1{ font-size:28px; margin:0; }
 
 .header{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  margin-bottom:10px;
 }
 
 button{
@@ -50,9 +49,7 @@ button{
 
 /* 4 BLOKKE OP GROOT SKERM */
 @media (min-width:900px){
-  .grid{
-    grid-template-columns:repeat(4,1fr);
-  }
+  .grid{ grid-template-columns:repeat(4,1fr); }
 }
 
 .card{
@@ -81,6 +78,7 @@ button{
   cursor:pointer;
   font-weight:bold;
   font-size:18px;
+  user-select:none;
 }
 
 .week-grid{
@@ -91,13 +89,15 @@ button{
 }
 
 @media (min-width:900px){
-  .week-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
+  .week-grid{ grid-template-columns:repeat(3,1fr); }
 }
 
-.hidden{
-  display:none;
+.hidden{ display:none; }
+
+.status{
+  margin-top:10px;
+  font-size:13px;
+  color:#6b7280;
 }
 </style>
 </head>
@@ -109,50 +109,21 @@ button{
 </div>
 
 <div class="info">
-  Laas opgedateer: <span id="updated"></span><br>
+  Laas opgedateer: <span id="updated">—</span><br>
   Plek: Moorreesburg
 </div>
 
+<div class="status" id="status">Status: wag…</div>
+
 <div class="grid">
-  <div class="card">
-    <h3>🌅 Son op</h3>
-    <p id="sunrise"></p>
-  </div>
-
-  <div class="card">
-    <h3>🌇 Son sak</h3>
-    <p id="sunset"></p>
-  </div>
-
-  <div class="card">
-    <h3>🌡 Minimum</h3>
-    <p id="min"></p>
-  </div>
-
-  <div class="card">
-    <h3>🌡 Maksimum</h3>
-    <p id="max"></p>
-  </div>
-
-  <div class="card">
-    <h3>🌧 Reën kans</h3>
-    <p id="rain"></p>
-  </div>
-
-  <div class="card">
-    <h3>⏱ Reën volgende 30min</h3>
-    <p id="rain30"></p>
-  </div>
-
-  <div class="card">
-    <h3>💨 Wind</h3>
-    <p id="wind"></p>
-  </div>
-
-  <div class="card">
-    <h3>☀ UV Index</h3>
-    <p id="uv"></p>
-  </div>
+  <div class="card"><h3>🌅 Son op</h3><p id="sunrise">—</p></div>
+  <div class="card"><h3>🌇 Son sak</h3><p id="sunset">—</p></div>
+  <div class="card"><h3>🌡 Minimum</h3><p id="min">—</p></div>
+  <div class="card"><h3>🌡 Maksimum</h3><p id="max">—</p></div>
+  <div class="card"><h3>🌧 Reën kans</h3><p id="rain">—</p></div>
+  <div class="card"><h3>⏱ Reën volgende 30min</h3><p id="rain30">—</p></div>
+  <div class="card"><h3>💨 Wind</h3><p id="wind">—</p></div>
+  <div class="card"><h3>☀ UV Index</h3><p id="uv">—</p></div>
 </div>
 
 <button onclick="loadData()" style="margin-top:20px;">Refresh</button>
@@ -164,52 +135,66 @@ button{
 <div id="weekSection" class="week-grid hidden"></div>
 
 <script>
-
 async function loadData(){
-  const res = await fetch("data.json");
-  const data = await res.json();
+  const status = document.getElementById("status");
+  status.innerText = "Status: besig om te laai…";
 
-  document.getElementById("updated").innerText = data.updated_at;
+  try{
+    // 🔥 Cache-busting + no-store
+    const res = await fetch("data.json?ts=" + Date.now(), { cache: "no-store" });
+    const data = await res.json();
 
-  const today = data.week[0];
+    document.getElementById("updated").innerText = data.updated_at || "—";
 
-  document.getElementById("sunrise").innerText = today.sunrise;
-  document.getElementById("sunset").innerText = today.sunset;
-  document.getElementById("min").innerText = today.min + "°C";
-  document.getElementById("max").innerText = today.max + "°C";
-  document.getElementById("rain").innerText = today.rain_prob + "%";
-  document.getElementById("rain30").innerText = data.next30_rain_prob + "%";
-  document.getElementById("wind").innerText = today.wind_kmh + " km/h " + today.wind_dir;
-  document.getElementById("uv").innerText = today.uv;
+    if(!data.week || !data.week.length){
+      status.innerText = "Status: data.json het nie 'week' data nie.";
+      return;
+    }
 
-  // 7 dae
-  const weekDiv = document.getElementById("weekSection");
-  weekDiv.innerHTML = "";
+    const today = data.week[0];
 
-  data.week.forEach(day=>{
-    const card = document.createElement("div");
-    card.className="card";
-    card.innerHTML = `
-      <h3>${day.date}</h3>
-      <p>${day.min}° / ${day.max}°</p>
-      <p>🌧 ${day.rain_prob}%</p>
-      <p>💨 ${day.wind_kmh} km/h ${day.wind_dir}</p>
-      <p>☀ UV ${day.uv}</p>
-    `;
-    weekDiv.appendChild(card);
-  });
+    document.getElementById("sunrise").innerText = today.sunrise ?? "—";
+    document.getElementById("sunset").innerText  = today.sunset ?? "—";
+    document.getElementById("min").innerText     = (today.min ?? "—") + "°C";
+    document.getElementById("max").innerText     = (today.max ?? "—") + "°C";
+    document.getElementById("rain").innerText    = (today.rain_prob ?? "—") + "%";
+    document.getElementById("rain30").innerText  = (data.next30_rain_prob ?? "—") + "%";
+    document.getElementById("wind").innerText    = (today.wind_kmh ?? "—") + " km/h " + (today.wind_dir ?? "");
+    document.getElementById("uv").innerText      = (today.uv ?? "—");
+
+    // 7 dae
+    const weekDiv = document.getElementById("weekSection");
+    weekDiv.innerHTML = "";
+
+    data.week.forEach(day=>{
+      const card = document.createElement("div");
+      card.className="card";
+      card.innerHTML = `
+        <h3>${day.date ?? ""}</h3>
+        <p>${day.min ?? "—"}° / ${day.max ?? "—"}°</p>
+        <p>🌧 ${(day.rain_prob ?? "—")}%</p>
+        <p>💨 ${day.wind_kmh ?? "—"} km/h ${day.wind_dir ?? ""}</p>
+        <p>☀ UV ${day.uv ?? "—"}</p>
+      `;
+      weekDiv.appendChild(card);
+    });
+
+    status.innerText = "Status: OK (nuutste data gelaai)";
+  } catch (e){
+    console.log(e);
+    status.innerText = "Status: fout met laai (kyk console).";
+  }
 }
 
 function toggleWeek(){
-  const section = document.getElementById("weekSection");
-  section.classList.toggle("hidden");
+  document.getElementById("weekSection").classList.toggle("hidden");
 }
 
+// eerste load
 loadData();
 
-/* AUTO REFRESH ELKE 10 MIN */
-setInterval(loadData, 600000);
-
+// 🔄 AUTO REFRESH ELKE 10 MIN
+setInterval(loadData, 10 * 60 * 1000);
 </script>
 
 </body>
