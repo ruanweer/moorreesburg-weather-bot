@@ -1,23 +1,36 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ruan Weer Stasie</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ruan Weer Stasie</title>
 </head>
-<body style="font-family: Arial; max-width:600px; margin:40px auto;">
-<h2>🌦️ Ruan Weer Stasie</h2>
-<p id="updated">Laai...</p>
-<pre id="msg">...</pre>
 
-<script>
-async function load(){
-  const r = await fetch("data.json?ts=" + Date.now());
-  const j = await r.json();
-  document.getElementById("updated").innerText = "Laas update: " + (j.updated_at || "?");
-  document.getElementById("msg").innerText = j.message || "Geen message";
-}
-load();
-</script>
+<body style="font-family: Arial; max-width: 600px; margin: auto; padding: 20px;">
+  <h2>🌤️ Ruan Weer Stasie</h2>
+  <p id="updated">Laai...</p>
+  <pre id="msg">...</pre>
+
+  <script>
+    async function load(){
+      try {
+        const r = await fetch("data.json?ts=" + Date.now());
+        const j = await r.json();
+
+        document.getElementById("updated").innerText =
+          "Laas opgedateer: " + j.updated_at;
+
+        document.getElementById("msg").innerText =
+          j.message;
+
+      } catch (e) {
+        document.getElementById("updated").innerText =
+          "Kon nie data laai nie.";
+      }
+    }
+
+    load();
+    setInterval(load, 60000);
+  </script>
 </body>
 </html>
