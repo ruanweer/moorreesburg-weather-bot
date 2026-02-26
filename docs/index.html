@@ -6,107 +6,96 @@
   <title>Ruan Weer Stasie</title>
   <style>
     :root{
-      --bg:#ffffff; --card:#f6f7f9; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
-      --accent:#111827;
+      --bg:#f6f7fb; --card:#ffffff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
+      --shadow: 0 10px 25px rgba(0,0,0,.06);
     }
     @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0b1220; --card:#0f1a30; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2a44;
-        --accent:#e5e7eb;
-      }
+      :root{ --bg:#0b1220; --card:#0f1a2e; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2a44; --shadow: 0 10px 25px rgba(0,0,0,.35); }
     }
-    body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:var(--bg); color:var(--text);
-    }
-    .wrap{ max-width: 760px; margin: 24px auto; padding: 0 16px; }
-    .title{ display:flex; align-items:center; gap:10px; font-size: 30px; font-weight: 800; }
-    .muted{ color:var(--muted); margin-top:6px; }
+    body{ margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; background:var(--bg); color:var(--text); }
+    .wrap{ max-width: 820px; margin: 24px auto; padding: 0 14px; }
+    h1{ margin: 8px 0 6px; font-size: 40px; letter-spacing:-.5px; display:flex; align-items:center; gap:10px; }
+    .sub{ color:var(--muted); margin-bottom: 18px; }
+    .grid{ display:grid; grid-template-columns: 1fr; gap: 14px; }
+    @media (min-width: 720px){ .grid{ grid-template-columns: 1fr 1fr; } }
     .card{
-      margin-top:16px; background:var(--card); border:1px solid var(--border);
-      border-radius:16px; padding:16px;
+      background:var(--card); border:1px solid var(--border); border-radius: 18px;
+      box-shadow: var(--shadow); padding: 16px;
     }
-    pre{
-      margin:0; white-space:pre-wrap; font-size:16px; line-height:1.35;
-    }
-    .grid{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap:10px;
-    }
-    .day{
-      background: rgba(255,255,255,0.04);
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:12px;
-    }
-    .day h4{ margin:0 0 6px 0; font-size:14px; color:var(--muted); font-weight:700; }
-    .row{ display:flex; justify-content:space-between; gap:10px; font-size:14px; }
-    .row span{ color:var(--muted); }
-    .btnbar{ display:flex; gap:10px; margin-top:10px; }
+    .card h2{ margin:0 0 10px; font-size: 22px; }
+    pre{ margin:0; white-space: pre-wrap; word-wrap: break-word; font-size: 18px; line-height: 1.45; }
+    .btnrow{ display:flex; gap:10px; margin-top: 12px; flex-wrap:wrap; }
     button{
-      background: transparent; color:var(--accent);
-      border:1px solid var(--border);
-      padding:10px 12px; border-radius:12px; font-weight:700;
+      border:1px solid var(--border); background: transparent; color: var(--text);
+      padding: 10px 14px; border-radius: 12px; font-weight: 650; cursor:pointer;
     }
+    .week{
+      display:grid; grid-template-columns: 1fr; gap: 10px;
+    }
+    @media (min-width: 720px){ .week{ grid-template-columns: 1fr 1fr; } }
+    .day{
+      border:1px solid var(--border); border-radius: 14px; padding: 12px; background: rgba(255,255,255,.02);
+    }
+    .day .date{ font-weight: 800; margin-bottom: 6px; }
+    .mini{ color:var(--muted); font-size: 13px; margin-top: 8px; }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="title">🌤️ Ruan Weer Stasie</div>
-    <div class="muted" id="updated">Laai…</div>
+    <h1>🌤️ Ruan Weer Stasie</h1>
+    <div class="sub">Laas opgedateer: <span id="updated">Laai…</span></div>
 
-    <div class="card">
-      <pre id="msg">…</pre>
-      <div class="btnbar">
-        <button onclick="load()">Refresh</button>
+    <div class="grid">
+      <div class="card">
+        <h2>🌤️ Weer vir vandag</h2>
+        <pre id="msg">Laai…</pre>
+        <div class="btnrow">
+          <button onclick="load()">Refresh</button>
+        </div>
+        <div class="mini" id="now30"></div>
       </div>
-    </div>
 
-    <div class="card">
-      <h3 style="margin:0 0 10px 0;">7 Dae Voorspelling</h3>
-      <div class="grid" id="days"></div>
+      <div class="card">
+        <h2>7 Dae Voorspelling</h2>
+        <div class="week" id="week"></div>
+      </div>
     </div>
   </div>
 
   <script>
-    function shortDay(dateStr){
-      const d = new Date(dateStr + "T00:00:00");
-      return d.toLocaleDateString("af-ZA", { weekday:"short", day:"2-digit", month:"short" });
-    }
-
-    function escapeHtml(s){
-      return (s ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
-    }
-
     async function load(){
-      try{
-        const r = await fetch("data.json?ts=" + Date.now(), { cache: "no-store" });
-        if(!r.ok) throw new Error("HTTP " + r.status);
-        const j = await r.json();
+      const res = await fetch("data.json?ts=" + Date.now());
+      const j = await res.json();
 
-        document.getElementById("updated").textContent = "Laas opgedateer: " + (j.updated_at ?? "?");
-        document.getElementById("msg").textContent = j.message ?? "Geen boodskap.";
+      document.getElementById("updated").textContent = j.updated_at || "-";
+      document.getElementById("msg").textContent = j.message || "Nog geen data nie.";
 
-        const daysEl = document.getElementById("days");
-        daysEl.innerHTML = "";
+      // volgende 30min extra lyn (as beskikbaar)
+      const now30 = document.getElementById("now30");
+      if (j.next30_rain_prob !== null && j.next30_rain_prob !== undefined){
+        const mm = (j.next30_rain_mm !== null && j.next30_rain_mm !== undefined) ? ` (${Number(j.next30_rain_mm).toFixed(2)} mm)` : "";
+        now30.textContent = `⏱️ Reën kans volgende 30 min: ${Math.round(j.next30_rain_prob)}%${mm}`;
+      } else {
+        now30.textContent = "";
+      }
 
-        const daily = j.daily ?? [];
-        for(const d of daily){
-          const el = document.createElement("div");
-          el.className = "day";
-          el.innerHTML = `
-            <h4>${escapeHtml(shortDay(d.date))}</h4>
-            <div class="row"><div>🌡️ ${d.tmin.toFixed(1)}° / ${d.tmax.toFixed(1)}°</div><span>UV ${d.uv.toFixed(1)}</span></div>
-            <div class="row"><div>🌧️ ${d.rain_prob.toFixed(0)}% (${d.rain_mm.toFixed(1)}mm)</div><span>💨 ${d.wind_max.toFixed(0)} ${d.wind_dir}</span></div>
-            <div class="row"><div>🌅 ${d.sunrise.slice(-5)} </div><span>🌇 ${d.sunset.slice(-5)}</span></div>
-          `;
-          daysEl.appendChild(el);
-        }
-      }catch(e){
-        document.getElementById("updated").textContent = "Kon nie data laai nie.";
-        document.getElementById("msg").textContent = String(e);
+      const weekEl = document.getElementById("week");
+      weekEl.innerHTML = "";
+
+      const week = j.week || [];
+      for (const d of week){
+        const box = document.createElement("div");
+        box.className = "day";
+        const date = d.date || "";
+        box.innerHTML = `
+          <div class="date">${date}</div>
+          <div>🌡️ ${d.min?.toFixed?.(1) ?? "-"}° / ${d.max?.toFixed?.(1) ?? "-"}°</div>
+          <div>🌧️ ${d.rain_prob ?? "-"}% (${d.rain_mm?.toFixed?.(1) ?? "-"}mm)</div>
+          <div>💨 ${d.wind_kmh?.toFixed?.(1) ?? "-"} km/h ${d.wind_dir ?? "?"}</div>
+          <div>☀️ UV ${d.uv?.toFixed?.(1) ?? "-"}</div>
+          <div>🌅 ${d.sunrise ?? "--:--"}  🌇 ${d.sunset ?? "--:--"}</div>
+        `;
+        weekEl.appendChild(box);
       }
     }
     load();
