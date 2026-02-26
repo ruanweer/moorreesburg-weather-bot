@@ -2,7 +2,7 @@ name: Run Weather Bot
 
 on:
   schedule:
-    - cron: "0 * * * *"   # elke uur
+    - cron: "*/10 * * * *"  # elke 10 minute
   workflow_dispatch:
 
 permissions:
@@ -30,10 +30,17 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python forecast.py
 
-      - name: Commit dashboard data (docs/data.json)
+      - name: Commit updated dashboard data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/data.json
-          git commit -m "Update dashboard data" || exit 0
+
+          git add docs/data.json || true
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Update dashboard data"
           git push
