@@ -1,104 +1,139 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="af">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ruan Weer Stasie</title>
-  <style>
-    :root{
-      --bg:#f6f7fb; --card:#ffffff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
-      --shadow: 0 10px 25px rgba(0,0,0,.06);
-    }
-    @media (prefers-color-scheme: dark){
-      :root{ --bg:#0b1220; --card:#0f1a2e; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2a44; --shadow: 0 10px 25px rgba(0,0,0,.35); }
-    }
-    body{ margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; background:var(--bg); color:var(--text); }
-    .wrap{ max-width: 820px; margin: 24px auto; padding: 0 14px; }
-    h1{ margin: 8px 0 6px; font-size: 40px; letter-spacing:-.5px; display:flex; align-items:center; gap:10px; }
-    .sub{ color:var(--muted); margin-bottom: 18px; }
-    .grid{ display:grid; grid-template-columns: 1fr; gap: 14px; }
-    @media (min-width: 720px){ .grid{ grid-template-columns: 1fr 1fr; } }
-    .card{
-      background:var(--card); border:1px solid var(--border); border-radius: 18px;
-      box-shadow: var(--shadow); padding: 16px;
-    }
-    .card h2{ margin:0 0 10px; font-size: 22px; }
-    pre{ margin:0; white-space: pre-wrap; word-wrap: break-word; font-size: 18px; line-height: 1.45; }
-    .btnrow{ display:flex; gap:10px; margin-top: 12px; flex-wrap:wrap; }
-    button{
-      border:1px solid var(--border); background: transparent; color: var(--text);
-      padding: 10px 14px; border-radius: 12px; font-weight: 650; cursor:pointer;
-    }
-    .week{
-      display:grid; grid-template-columns: 1fr; gap: 10px;
-    }
-    @media (min-width: 720px){ .week{ grid-template-columns: 1fr 1fr; } }
-    .day{
-      border:1px solid var(--border); border-radius: 14px; padding: 12px; background: rgba(255,255,255,.02);
-    }
-    .day .date{ font-weight: 800; margin-bottom: 6px; }
-    .mini{ color:var(--muted); font-size: 13px; margin-top: 8px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruan Weer Stasie</title>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f4f6f9;
+  margin:0;
+  padding:20px;
+}
+
+h1{
+  font-size:28px;
+}
+
+.card{
+  background:white;
+  padding:18px;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  margin-bottom:20px;
+}
+
+.weekFile{
+  background:white;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  padding:12px;
+}
+
+summary{
+  font-weight:bold;
+  font-size:18px;
+  cursor:pointer;
+  padding:8px;
+}
+
+.weekGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;
+  margin-top:15px;
+}
+
+.dayCard{
+  background:#f9fafc;
+  padding:10px;
+  border-radius:10px;
+  font-size:14px;
+}
+
+button{
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  background:#e9edf3;
+  cursor:pointer;
+}
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <h1>🌤️ Ruan Weer Stasie</h1>
-    <div class="sub">Laas opgedateer: <span id="updated">Laai…</span></div>
 
-    <div class="grid">
-      <div class="card">
-        <h2>🌤️ Weer vir vandag</h2>
-        <pre id="msg">Laai…</pre>
-        <div class="btnrow">
-          <button onclick="load()">Refresh</button>
-        </div>
-        <div class="mini" id="now30"></div>
-      </div>
+<h1>🌤️ Ruan Weer Stasie</h1>
 
-      <div class="card">
-        <h2>7 Dae Voorspelling</h2>
-        <div class="week" id="week"></div>
-      </div>
+<p>Laas opgedateer: <span id="updated"></span></p>
+
+<div class="card">
+  <h3>🌞 Weer vir vandag</h3>
+
+  <p>🌅 Son op: <span id="sunrise"></span></p>
+  <p>🌇 Son sak: <span id="sunset"></span></p>
+
+  <p>🌡️ Min: <span id="min"></span>°C</p>
+  <p>🌡️ Max: <span id="max"></span>°C</p>
+
+  <p>🌧️ Reën kans: <span id="rainChance"></span>%</p>
+  <p>🌧️ Reën totaal: <span id="rainTotal"></span> mm</p>
+
+  <p>⏱️ Reën volgende 30min: <span id="rain30"></span>%</p>
+
+  <p>💨 Wind: <span id="wind"></span> km/h <span id="windDir"></span></p>
+  <p>☀️ UV Index: <span id="uv"></span></p>
+
+  <button onclick="location.reload()">Refresh</button>
+</div>
+
+<details class="weekFile">
+  <summary>📁 7 Dae Voorspelling</summary>
+
+  <div class="weekGrid" id="week"></div>
+</details>
+
+<script>
+fetch("data.json")
+.then(res => res.json())
+.then(data => {
+
+document.getElementById("updated").innerText = data.updated;
+document.getElementById("sunrise").innerText = data.sunrise;
+document.getElementById("sunset").innerText = data.sunset;
+
+document.getElementById("min").innerText = data.min;
+document.getElementById("max").innerText = data.max;
+
+document.getElementById("rainChance").innerText = data.rain_chance;
+document.getElementById("rainTotal").innerText = data.rain_total;
+document.getElementById("rain30").innerText = data.rain_30min;
+
+document.getElementById("wind").innerText = data.wind_speed;
+document.getElementById("windDir").innerText = data.wind_dir;
+document.getElementById("uv").innerText = data.uv;
+
+let weekHTML = "";
+data.week.forEach(day=>{
+  weekHTML += `
+    <div class="dayCard">
+      <b>${day.date}</b><br>
+      🌡️ ${day.min}° / ${day.max}°<br>
+      🌧️ ${day.rain}% (${day.rain_total}mm)<br>
+      💨 ${day.wind} ${day.wind_dir}<br>
+      ☀️ UV ${day.uv}<br>
+      🌅 ${day.sunrise}<br>
+      🌇 ${day.sunset}
     </div>
-  </div>
+  `;
+});
 
-  <script>
-    async function load(){
-      const res = await fetch("data.json?ts=" + Date.now());
-      const j = await res.json();
+document.getElementById("week").innerHTML = weekHTML;
 
-      document.getElementById("updated").textContent = j.updated_at || "-";
-      document.getElementById("msg").textContent = j.message || "Nog geen data nie.";
+});
+</script>
 
-      // volgende 30min extra lyn (as beskikbaar)
-      const now30 = document.getElementById("now30");
-      if (j.next30_rain_prob !== null && j.next30_rain_prob !== undefined){
-        const mm = (j.next30_rain_mm !== null && j.next30_rain_mm !== undefined) ? ` (${Number(j.next30_rain_mm).toFixed(2)} mm)` : "";
-        now30.textContent = `⏱️ Reën kans volgende 30 min: ${Math.round(j.next30_rain_prob)}%${mm}`;
-      } else {
-        now30.textContent = "";
-      }
-
-      const weekEl = document.getElementById("week");
-      weekEl.innerHTML = "";
-
-      const week = j.week || [];
-      for (const d of week){
-        const box = document.createElement("div");
-        box.className = "day";
-        const date = d.date || "";
-        box.innerHTML = `
-          <div class="date">${date}</div>
-          <div>🌡️ ${d.min?.toFixed?.(1) ?? "-"}° / ${d.max?.toFixed?.(1) ?? "-"}°</div>
-          <div>🌧️ ${d.rain_prob ?? "-"}% (${d.rain_mm?.toFixed?.(1) ?? "-"}mm)</div>
-          <div>💨 ${d.wind_kmh?.toFixed?.(1) ?? "-"} km/h ${d.wind_dir ?? "?"}</div>
-          <div>☀️ UV ${d.uv?.toFixed?.(1) ?? "-"}</div>
-          <div>🌅 ${d.sunrise ?? "--:--"}  🌇 ${d.sunset ?? "--:--"}</div>
-        `;
-        weekEl.appendChild(box);
-      }
-    }
-    load();
-  </script>
 </body>
 </html>
