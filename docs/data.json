@@ -1,15 +1,15 @@
 {
-  "updated_at": "2026-04-02 11:44",
-  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 06:58\n🌇 Son sak: 18:39\n\n🌡️ Min: 19.7°C\n🌡️ Max: 27.5°C\n\n🌧️ Reën kans: 75%\n🌧️ Reën totaal: 3.1 mm\n\n⏱️ Reën kans volgende 30 min: 18% (0.10 mm)\n\n💨 Wind: 9.1 km/h NE\n☀️ UV Index: 4.90",
+  "updated_at": "2026-04-02 12:36",
+  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 06:58\n🌇 Son sak: 18:39\n\n🌡️ Min: 19.7°C\n🌡️ Max: 28.2°C\n\n🌧️ Reën kans: 75%\n🌧️ Reën totaal: 2.8 mm\n\n⏱️ Reën kans volgende 30 min: 18% (0.10 mm)\n\n💨 Wind: 9.1 km/h NE\n☀️ UV Index: 4.90",
   "next30_rain_prob": 18,
   "next30_rain_mm": 0.1,
   "week": [
     {
       "date": "2026-04-02",
       "min": 19.7,
-      "max": 27.5,
+      "max": 28.2,
       "rain_prob": 75,
-      "rain_mm": 3.1,
+      "rain_mm": 2.8,
       "wind_kmh": 9.1,
       "wind_dir": "NE",
       "uv": 4.9,
@@ -18,10 +18,10 @@
     },
     {
       "date": "2026-04-03",
-      "min": 17.0,
-      "max": 23.0,
+      "min": 16.9,
+      "max": 22.7,
       "rain_prob": 75,
-      "rain_mm": 14.9,
+      "rain_mm": 19.5,
       "wind_kmh": 12.7,
       "wind_dir": "SW",
       "uv": 4.4,
@@ -30,8 +30,8 @@
     },
     {
       "date": "2026-04-04",
-      "min": 14.6,
-      "max": 22.9,
+      "min": 13.5,
+      "max": 23.2,
       "rain_prob": 0,
       "rain_mm": 0.0,
       "wind_kmh": 18.4,
@@ -42,7 +42,7 @@
     },
     {
       "date": "2026-04-05",
-      "min": 13.4,
+      "min": 13.0,
       "max": 22.1,
       "rain_prob": 3,
       "rain_mm": 0.0,
@@ -54,8 +54,8 @@
     },
     {
       "date": "2026-04-06",
-      "min": 12.6,
-      "max": 23.7,
+      "min": 13.5,
+      "max": 24.8,
       "rain_prob": 1,
       "rain_mm": 0.0,
       "wind_kmh": 24.4,
@@ -66,7 +66,7 @@
     },
     {
       "date": "2026-04-07",
-      "min": 13.2,
+      "min": 14.6,
       "max": 28.5,
       "rain_prob": 3,
       "rain_mm": 0.0,
