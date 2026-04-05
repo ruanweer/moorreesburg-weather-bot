@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-05 19:00",
+  "updated_at": "2026-04-05 19:44",
   "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 07:00\n🌇 Son sak: 18:35\n\n🌡️ Min: 13.1°C\n🌡️ Max: 22.4°C\n\n🌧️ Reën kans: 0%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 24.5 km/h S\n☀️ UV Index: 6.55",
   "next30_rain_prob": 0,
   "next30_rain_mm": 0.0,
@@ -48,7 +48,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 16.6,
       "wind_dir": "SW",
-      "uv": 6.35,
+      "uv": 6.4,
       "sunrise": "07:02",
       "sunset": "18:32"
     },
@@ -72,7 +72,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 20.8,
       "wind_dir": "SW",
-      "uv": 5.45,
+      "uv": 5.85,
       "sunrise": "07:03",
       "sunset": "18:29"
     },
@@ -84,7 +84,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 19.1,
       "wind_dir": "S",
-      "uv": 5.5,
+      "uv": 5.95,
       "sunrise": "07:04",
       "sunset": "18:28"
     }
