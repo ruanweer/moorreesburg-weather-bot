@@ -1,28 +1,16 @@
 {
-  "updated_at": "2026-04-17 23:56",
-  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 07:08\n🌇 Son sak: 18:21\n\n🌡️ Min: 11.6°C\n🌡️ Max: 15.9°C\n\n🌧️ Reën kans: 100%\n🌧️ Reën totaal: 21.9 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 29.9 km/h N\n☀️ UV Index: 2.65",
-  "next30_rain_prob": 0,
-  "next30_rain_mm": 0.0,
+  "updated_at": "2026-04-18 00:34",
+  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 07:09\n🌇 Son sak: 18:20\n\n🌡️ Min: 11.7°C\n🌡️ Max: 16.0°C\n\n🌧️ Reën kans: 55%\n🌧️ Reën totaal: 1.5 mm\n\n⏱️ Reën kans volgende 30 min: 39% (0.10 mm)\n\n💨 Wind: 20.7 km/h N\n☀️ UV Index: 4.80",
+  "next30_rain_prob": 39,
+  "next30_rain_mm": 0.1,
   "week": [
-    {
-      "date": "2026-04-17",
-      "min": 11.6,
-      "max": 15.9,
-      "rain_prob": 100,
-      "rain_mm": 21.9,
-      "wind_kmh": 29.9,
-      "wind_dir": "N",
-      "uv": 2.65,
-      "sunrise": "07:08",
-      "sunset": "18:21"
-    },
     {
       "date": "2026-04-18",
       "min": 11.7,
       "max": 16.0,
       "rain_prob": 55,
       "rain_mm": 1.5,
-      "wind_kmh": 20.6,
+      "wind_kmh": 20.7,
       "wind_dir": "N",
       "uv": 4.8,
       "sunrise": "07:09",
@@ -34,7 +22,7 @@
       "max": 15.7,
       "rain_prob": 100,
       "rain_mm": 13.0,
-      "wind_kmh": 34.9,
+      "wind_kmh": 37.3,
       "wind_dir": "NW",
       "uv": 3.05,
       "sunrise": "07:10",
@@ -46,7 +34,7 @@
       "max": 16.5,
       "rain_prob": 46,
       "rain_mm": 0.0,
-      "wind_kmh": 17.8,
+      "wind_kmh": 20.2,
       "wind_dir": "NW",
       "uv": 4.7,
       "sunrise": "07:11",
@@ -58,7 +46,7 @@
       "max": 17.5,
       "rain_prob": 26,
       "rain_mm": 0.6,
-      "wind_kmh": 18.1,
+      "wind_kmh": 19.2,
       "wind_dir": "NW",
       "uv": 4.9,
       "sunrise": "07:11",
@@ -70,7 +58,7 @@
       "max": 20.9,
       "rain_prob": 10,
       "rain_mm": 0.0,
-      "wind_kmh": 17.2,
+      "wind_kmh": 16.9,
       "wind_dir": "SE",
       "uv": 5.45,
       "sunrise": "07:12",
@@ -87,6 +75,18 @@
       "uv": 5.2,
       "sunrise": "07:13",
       "sunset": "18:14"
+    },
+    {
+      "date": "2026-04-24",
+      "min": 14.3,
+      "max": 29.7,
+      "rain_prob": 0,
+      "rain_mm": 0.0,
+      "wind_kmh": 9.5,
+      "wind_dir": "SE",
+      "uv": 5.2,
+      "sunrise": "07:14",
+      "sunset": "18:13"
     }
   ]
 }
