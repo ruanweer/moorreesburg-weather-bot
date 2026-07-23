@@ -1,21 +1,9 @@
 {
-  "updated_at": "2026-07-23 23:17",
-  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 07:42\n🌇 Son sak: 18:00\n\n🌡️ Min: 10.2°C\n🌡️ Max: 14.2°C\n\n🌧️ Reën kans: 100%\n🌧️ Reën totaal: 3.8 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 19.5 km/h N\n☀️ UV Index: 2.35",
-  "next30_rain_prob": 0,
+  "updated_at": "2026-07-24 00:17",
+  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 07:41\n🌇 Son sak: 18:01\n\n🌡️ Min: 10.0°C\n🌡️ Max: 17.3°C\n\n🌧️ Reën kans: 4%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 4% (0.00 mm)\n\n💨 Wind: 11.6 km/h SE\n☀️ UV Index: 4.15",
+  "next30_rain_prob": 4,
   "next30_rain_mm": 0.0,
   "week": [
-    {
-      "date": "2026-07-23",
-      "min": 10.2,
-      "max": 14.2,
-      "rain_prob": 100,
-      "rain_mm": 3.8,
-      "wind_kmh": 19.5,
-      "wind_dir": "N",
-      "uv": 2.35,
-      "sunrise": "07:42",
-      "sunset": "18:00"
-    },
     {
       "date": "2026-07-24",
       "min": 10.0,
@@ -87,6 +75,18 @@
       "uv": 4.0,
       "sunrise": "07:38",
       "sunset": "18:04"
+    },
+    {
+      "date": "2026-07-30",
+      "min": 14.6,
+      "max": 28.2,
+      "rain_prob": 0,
+      "rain_mm": 0.0,
+      "wind_kmh": 14.6,
+      "wind_dir": "NW",
+      "uv": 4.2,
+      "sunrise": "07:37",
+      "sunset": "18:05"
     }
   ]
 }
