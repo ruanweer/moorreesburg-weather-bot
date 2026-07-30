@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-07-31 00:48",
-  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 07:36\n🌇 Son sak: 18:06\n\n🌡️ Min: 9.6°C\n🌡️ Max: 25.1°C\n\n🌧️ Reën kans: 0%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 9.6 km/h SE\n☀️ UV Index: 3.95",
+  "updated_at": "2026-07-31 01:44",
+  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 07:36\n🌇 Son sak: 18:06\n\n🌡️ Min: 9.6°C\n🌡️ Max: 25.1°C\n\n🌧️ Reën kans: 0%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 9.6 km/h SE\n☀️ UV Index: 4.15",
   "next30_rain_prob": 0,
   "next30_rain_mm": 0.0,
   "week": [
@@ -12,7 +12,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 9.6,
       "wind_dir": "SE",
-      "uv": 3.95,
+      "uv": 4.15,
       "sunrise": "07:36",
       "sunset": "18:06"
     },
@@ -24,7 +24,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 8.8,
       "wind_dir": "E",
-      "uv": 4.4,
+      "uv": 4.0,
       "sunrise": "07:36",
       "sunset": "18:06"
     },
@@ -36,7 +36,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 9.5,
       "wind_dir": "W",
-      "uv": 4.5,
+      "uv": 4.55,
       "sunrise": "07:35",
       "sunset": "18:07"
     },
@@ -56,11 +56,11 @@
       "date": "2026-08-04",
       "min": 9.7,
       "max": 19.4,
-      "rain_prob": 2,
+      "rain_prob": 4,
       "rain_mm": 0.0,
       "wind_kmh": 11.6,
       "wind_dir": "W",
-      "uv": 4.55,
+      "uv": 4.5,
       "sunrise": "07:33",
       "sunset": "18:08"
     },
@@ -68,11 +68,11 @@
       "date": "2026-08-05",
       "min": 9.3,
       "max": 16.6,
-      "rain_prob": 9,
+      "rain_prob": 21,
       "rain_mm": 0.3,
       "wind_kmh": 24.8,
       "wind_dir": "NW",
-      "uv": 4.45,
+      "uv": 2.85,
       "sunrise": "07:32",
       "sunset": "18:09"
     },
@@ -80,11 +80,11 @@
       "date": "2026-08-06",
       "min": 10.2,
       "max": 16.2,
-      "rain_prob": 24,
+      "rain_prob": 30,
       "rain_mm": 2.1,
       "wind_kmh": 13.9,
       "wind_dir": "W",
-      "uv": 1.7,
+      "uv": 3.0,
       "sunrise": "07:31",
       "sunset": "18:10"
     }
