@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-08-26 07:02",
-  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 07:10\n🌇 Son sak: 18:23\n\n🌡️ Min: 12.9°C\n🌡️ Max: 29.2°C\n\n🌧️ Reën kans: 0%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 20.4 km/h SE\n☀️ UV Index: 5.15",
+  "updated_at": "2026-08-26 07:43",
+  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 07:10\n🌇 Son sak: 18:23\n\n🌡️ Min: 12.9°C\n🌡️ Max: 29.2°C\n\n🌧️ Reën kans: 0%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 20.4 km/h SE\n☀️ UV Index: 4.95",
   "next30_rain_prob": 0,
   "next30_rain_mm": 0.0,
   "week": [
@@ -12,7 +12,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 20.4,
       "wind_dir": "SE",
-      "uv": 5.15,
+      "uv": 4.95,
       "sunrise": "07:10",
       "sunset": "18:23"
     },
@@ -24,7 +24,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 14.4,
       "wind_dir": "SW",
-      "uv": 5.55,
+      "uv": 5.0,
       "sunrise": "07:08",
       "sunset": "18:24"
     },
@@ -36,7 +36,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 14.3,
       "wind_dir": "W",
-      "uv": 5.5,
+      "uv": 5.65,
       "sunrise": "07:07",
       "sunset": "18:25"
     },
@@ -48,7 +48,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 26.7,
       "wind_dir": "S",
-      "uv": 4.15,
+      "uv": 3.6,
       "sunrise": "07:06",
       "sunset": "18:25"
     },
@@ -72,7 +72,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 18.4,
       "wind_dir": "S",
-      "uv": 5.45,
+      "uv": 5.7,
       "sunrise": "07:04",
       "sunset": "18:27"
     },
@@ -84,7 +84,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 13.1,
       "wind_dir": "SW",
-      "uv": 2.25,
+      "uv": 2.75,
       "sunrise": "07:02",
       "sunset": "18:27"
     }
