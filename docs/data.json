@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-09-28 02:52",
-  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 06:26\n🌇 Son sak: 18:45\n\n🌡️ Min: 11.7°C\n🌡️ Max: 25.5°C\n\n🌧️ Reën kans: 0%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 30.3 km/h SE\n☀️ UV Index: 7.05",
+  "updated_at": "2026-09-28 08:06",
+  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 06:26\n🌇 Son sak: 18:45\n\n🌡️ Min: 11.7°C\n🌡️ Max: 25.5°C\n\n🌧️ Reën kans: 0%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 30.3 km/h SE\n☀️ UV Index: 6.75",
   "next30_rain_prob": 0,
   "next30_rain_mm": 0.0,
   "week": [
@@ -12,7 +12,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 30.3,
       "wind_dir": "SE",
-      "uv": 7.05,
+      "uv": 6.75,
       "sunrise": "06:26",
       "sunset": "18:45"
     },
@@ -24,7 +24,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 23.6,
       "wind_dir": "SE",
-      "uv": 7.4,
+      "uv": 7.35,
       "sunrise": "06:25",
       "sunset": "18:46"
     },
@@ -36,7 +36,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 15.3,
       "wind_dir": "E",
-      "uv": 7.5,
+      "uv": 7.45,
       "sunrise": "06:23",
       "sunset": "18:46"
     },
@@ -48,7 +48,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 24.9,
       "wind_dir": "NW",
-      "uv": 7.45,
+      "uv": 7.55,
       "sunrise": "06:22",
       "sunset": "18:47"
     },
@@ -56,11 +56,11 @@
       "date": "2026-10-02",
       "min": 13.3,
       "max": 21.1,
-      "rain_prob": 31,
+      "rain_prob": 27,
       "rain_mm": 0.0,
       "wind_kmh": 22.6,
       "wind_dir": "SW",
-      "uv": 6.85,
+      "uv": 6.9,
       "sunrise": "06:21",
       "sunset": "18:48"
     },
@@ -68,11 +68,11 @@
       "date": "2026-10-03",
       "min": 11.7,
       "max": 22.9,
-      "rain_prob": 31,
+      "rain_prob": 20,
       "rain_mm": 0.0,
       "wind_kmh": 32.4,
       "wind_dir": "S",
-      "uv": 5.85,
+      "uv": 4.75,
       "sunrise": "06:19",
       "sunset": "18:48"
     },
@@ -80,11 +80,11 @@
       "date": "2026-10-04",
       "min": 10.9,
       "max": 22.7,
-      "rain_prob": 4,
+      "rain_prob": 5,
       "rain_mm": 0.0,
       "wind_kmh": 22.1,
       "wind_dir": "SE",
-      "uv": 7.7,
+      "uv": 7.65,
       "sunrise": "06:18",
       "sunset": "18:49"
     }
