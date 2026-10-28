@@ -1,21 +1,9 @@
 {
-  "updated_at": "2026-10-28 21:49",
-  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 05:49\n🌇 Son sak: 19:08\n\n🌡️ Min: 12.8°C\n🌡️ Max: 32.4°C\n\n🌧️ Reën kans: 0%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 22.1 km/h S\n☀️ UV Index: 8.70",
+  "updated_at": "2026-10-29 01:38",
+  "message": "🌤️ Weer vir vandag\n\n🌅 Son op: 05:48\n🌇 Son sak: 19:09\n\n🌡️ Min: 16.5°C\n🌡️ Max: 35.6°C\n\n🌧️ Reën kans: 0%\n🌧️ Reën totaal: 0.0 mm\n\n⏱️ Reën kans volgende 30 min: 0% (0.00 mm)\n\n💨 Wind: 19.9 km/h S\n☀️ UV Index: 8.80",
   "next30_rain_prob": 0,
   "next30_rain_mm": 0.0,
   "week": [
-    {
-      "date": "2026-10-28",
-      "min": 12.8,
-      "max": 32.4,
-      "rain_prob": 0,
-      "rain_mm": 0.0,
-      "wind_kmh": 22.1,
-      "wind_dir": "S",
-      "uv": 8.7,
-      "sunrise": "05:49",
-      "sunset": "19:08"
-    },
     {
       "date": "2026-10-29",
       "min": 16.5,
@@ -36,7 +24,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 29.8,
       "wind_dir": "S",
-      "uv": 8.55,
+      "uv": 8.85,
       "sunrise": "05:47",
       "sunset": "19:10"
     },
@@ -48,7 +36,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 24.7,
       "wind_dir": "SW",
-      "uv": 8.3,
+      "uv": 8.0,
       "sunrise": "05:46",
       "sunset": "19:11"
     },
@@ -60,7 +48,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 25.2,
       "wind_dir": "S",
-      "uv": 7.9,
+      "uv": 8.55,
       "sunrise": "05:46",
       "sunset": "19:12"
     },
@@ -72,7 +60,7 @@
       "rain_mm": 0.0,
       "wind_kmh": 24.8,
       "wind_dir": "S",
-      "uv": 8.05,
+      "uv": 8.15,
       "sunrise": "05:45",
       "sunset": "19:12"
     },
@@ -84,9 +72,21 @@
       "rain_mm": 0.0,
       "wind_kmh": 19.0,
       "wind_dir": "SW",
-      "uv": 8.85,
+      "uv": 8.45,
       "sunrise": "05:44",
       "sunset": "19:13"
+    },
+    {
+      "date": "2026-11-04",
+      "min": 15.0,
+      "max": 32.3,
+      "rain_prob": 10,
+      "rain_mm": 0.0,
+      "wind_kmh": 13.6,
+      "wind_dir": "W",
+      "uv": 9.0,
+      "sunrise": "05:43",
+      "sunset": "19:14"
     }
   ]
 }
